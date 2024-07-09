@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='events.css') }}">
+</head>
+<body>
+    <h1>Events</h1>
+    
+    <!-- Event List -->
+    <table>
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="event-list">
+            {% for event in events %}
+            <tr data-id="{{ event.id }}">
+                <td>{{ event.name }}</td>
+                <td>{{ event.date }}</td>
+                <td>
+                    <button class="edit-button">Edit</button>
+                    <button class="delete-button">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Add new event button -->
+    <div style="text-align: right; margin-top: 10px;">
+        <button class="add-button">Add New Event</button>
+    </div>
+
+</body>
+</html>
