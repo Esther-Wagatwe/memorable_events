@@ -1,13 +1,44 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
-
-{% block head %}
-    {{ super() }}
+{% block content %}
+<div class="dashboard">
+    <div class="total-events-box">
+        <h2>Total Events: <span class="total-events-count">10</span></h2>
+    </div>
+    <table class="events-table">
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Date</th>
+                <th>Total Guests</th>
+                <th>Total Vendors</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="/events/1">Birthday Party</a></td>
+                <td>2024-07-10</td>
+                <td>50</td>
+                <td>8</td>
+                <td>Planned</td>
+            </tr>
+            <tr>
+                <td><a href="/events/2">House Party</a></td>
+                <td>2024-08-15</td>
+                <td>30</td>
+                <td>2</td>
+                <td>Ongoing</td>
+            </tr>
+            <tr>
+                <td><a href="/events/3">Friends-coming</a></td>
+                <td>2024-09-20</td>
+                <td>20</td>
+                <td>4</td>
+                <td>Ongoing</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/events/create" class="create-event-link">Create New Event</a>
+</div>
 {% endblock %}
-
-{% block main_content %}
-    <h1>Dashboard</h1>
-{% endblock %}
-
-

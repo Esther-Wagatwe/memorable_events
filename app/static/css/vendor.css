@@ -1,0 +1,126 @@
+/* styles.css */
+
+/* Center the search bar */
+.input-group {
+    display: flex;
+    justify-content: center;
+    font-size: 1.25rem; /* Increase font size */
+}
+
+/* Ensure equal padding around the vendor list */
+.row.justify-content-center {
+    padding: 0 15px; /* Adjust as needed */
+}
+
+/* Style for vendor cards */
+.card {
+    width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.5rem; /* Increase font size */
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.card-text {
+    font-size: 1.25rem; /* Increase font size */
+    margin-bottom: 0.5rem;
+}
+
+.card-img-top {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* Styling for buttons */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    font-size: 1.25rem; /* Increase font size */
+    padding: 10px 20px; /* Increase padding */
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    font-size: 1.25rem; /* Increase font size */
+    padding: 10px 20px; /* Increase padding */
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* Center filter dropdown */
+.form-group {
+    text-align: center;
+    font-size: 1.25rem; /* Increase font size */
+}
+
+/* Ensure filter dropdown stays on the right */
+.col-md-3.d-flex.justify-content-end .form-group {
+    text-align: left;
+}
+
+/* Adjust margins and padding */
+.mb-4 {
+    margin-bottom: 1.5rem !important; /* Adjust as needed */
+}
+
+/* Rounded edges for search button */
+.rounded-start {
+    border-top-left-radius: 0.25rem !important;
+    border-bottom-left-radius: 0.25rem !important;
+}
+
+.rounded-end {
+    border-top-right-radius: 0.25rem !important;
+    border-bottom-right-radius: 0.25rem !important;
+}
+
+/* Adjust input and button sizes */
+.input-group input {
+    font-size: 1.25rem; /* Increase font size */
+    padding: 10px; /* Increase padding */
+}
+
+.input-group .input-group-append button {
+    font-size: 1.25rem; /* Increase font size */
+    padding: 10px 20px; /* Increase padding */
+}
+
+/* Increase size of filter dropdown */
+.form-control {
+    font-size: 1.25rem; /* Increase font size */
+    padding: 10px; /* Increase padding */
+}
+
+/* Adjust container to align search and filter on the same line */
+.row.mb-4.justify-content-center {
+    display: flex;
+    align-items: center;
+}
+
+.col-md-8 {
+    display: flex;
+    justify-content: center;
+}
+
+.col-md-3.d-flex.justify-content-end {
+    display: flex;
+    justify-content: flex-end;
+}

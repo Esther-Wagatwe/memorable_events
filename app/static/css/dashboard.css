@@ -1,0 +1,86 @@
+/* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+
+.dashboard {
+    padding: 20px;
+}
+
+
+.total-events-box {
+    margin-bottom: 20px;
+    padding: 5px;
+    background-color: #e0e0e0;
+    color: #333;
+    border-radius: 5px;
+    text-align: center;
+    width: 300px; /* Shorter width */
+    float: right; /* Align to the right */
+}
+
+.total-events-box h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.total-events-count {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    color: #333;
+    border-radius: 50%;
+    line-height: 40px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+/* Events table */
+.events-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.events-table th, .events-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.events-table th {
+    background-color: #f2f2f2;
+}
+
+.events-table td a {
+    color: #007bff; 
+    text-decoration: none;
+}
+
+.events-table td a:hover {
+    text-decoration: underline;
+    background-color: #aedde4;
+    border-radius: 5%;
+}
+
+.create-event-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; 
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.create-event-link:hover {
+    background-color: #0056b3;
+}

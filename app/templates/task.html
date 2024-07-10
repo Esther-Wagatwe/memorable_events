@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Tasks</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='task.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <h1>Tasks</h1>
     
     <!-- Table with Tasks -->
@@ -32,9 +27,7 @@
     </table>
     
     <!-- Add New Task Button -->
-    <div style="text-align: right; margin-top: 10px;">
+    <div style="text-align: left; margin-top: 10px;">
         <button class="add-button">Add New Task</button>
     </div>
-
-</body>
-</html>
+{% endblock %}

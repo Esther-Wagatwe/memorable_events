@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Guests</h1>
+<p>Total Accepted invites: 2</p> 
+<div class="filters">
+    <label for="status-filter">Filter by Status:</label>
+    <select id="status-filter">
+        <option value="all">All</option>
+        <option value="Accepted">Accepted</option>
+        <option value="pending">Pending</option>
+        <option value="Declined">Declined</option>
+
+    </select>
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Hardcoded guests -->
+        <tr>
+            <td>John Doe</td>
+            <td>john.doe@gmail.com</td>
+            <td>123-456-7890</td>
+            <td>Accepted</td>
+            <td>
+                <a href="/guests/delete/4" onclick="return confirm('Are you sure you want to delete this guest?');">Delete</a>
+            </td>
+            </td>
+        </tr>
+        <tr>
+            <td>Jane Smith</td>
+            <td>jane.smith@gmail.com</td>
+            <td>987-654-3210</td>
+            <td>Accepted</td>
+            <td>
+                <a href="/guests/delete/5" onclick="return confirm('Are you sure you want to delete this guest?');">Delete</a>
+            </td>
+            </td>
+        </tr>
+        <tr>
+            <td>Michael Johnson</td>
+            <td>michael.johnson@gmail.com</td>
+            <td>456-789-0123</td>
+            <td>Pending</td>
+            <td>
+                <a href="/guests/delete/5" onclick="return confirm('Are you sure you want to delete this guest?');">Delete</a>
+            </td>
+            </td>
+        </tr>
+        <tr>
+            <td>Susan Brown</td>
+            <td>susan.brown@gmail.com</td>
+            <td>789-012-3456</td>
+            <td>Declined</td>
+            <td>
+                <!-- Remove edit button as per request -->
+                <a href="/guests/delete/4" onclick="return confirm('Are you sure you want to delete this guest?');">Delete</a>
+            </td>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<a href="/guests/" class="button">Add New Guest</a>
+{% endblock %}
