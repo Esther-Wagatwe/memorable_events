@@ -10,6 +10,9 @@ class Vendor(Base):
     name = Column(String(100), nullable=False)
     type = Column(String(45), nullable=False)
     description = Column(Text, nullable=True)
+    image_path = Column(String(255), nullable=False)
+    phone_number = Column(String(20), nullable=False)
+    email = Column(String(255), nullable=False)
 
     event = relationship('Event', back_populates='vendors')
     reviews = relationship('Reviews', back_populates='vendor')
@@ -20,7 +23,10 @@ class Vendor(Base):
             'event_id': self.event_id,
             'name': self.name,
             'type': self.type,
-            'description': self.description
+            'description': self.description,
+            'image_path': self.image_path,
+            'phone_number': self.phone_number,
+            'email': self.email
         }
 
     def __repr__(self):

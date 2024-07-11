@@ -131,6 +131,7 @@ header {
 .login-form .form-group {
     margin-bottom: 20px;
     text-align: left;
+    font-size: 16px;
 }
 
 .login-form label {
