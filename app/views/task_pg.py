@@ -12,8 +12,8 @@ def get_tasks():
     session = Session()
     tasks = session.query(Task).all()
     session.close()
-    return jsonify([task.serialize() for task in tasks])
-    # return render_template('task.html', tasks=tasks)
+    # return jsonify([task.serialize() for task in tasks])
+    return render_template('task.html', tasks=tasks)
 
 @app_views.route('/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):
