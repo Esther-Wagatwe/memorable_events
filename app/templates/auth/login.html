@@ -6,9 +6,11 @@
     <title>Memorable Events</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
-<body>
+<body style="background-image: url('{{ url_for('static', filename='images/login.jpg') }}'); background-size: cover;">
+
     <div class="login-container">
-        <h1>Login to Your Account</h1>
+        <h1>WELCOME BACK</h1>
+        <p>Welcome back! Please enter your details.</p>
         <form action="/accounts/login" method="post" class="login-form">
             <div class="form-group">
                 <label for="email">Email</label>
@@ -18,8 +20,12 @@
                 <label for="password">Password</label>
                 <input type="password" name="password" placeholder="Enter your password" required>
             </div>
+            <div class="form-group">
+                <label><input type="checkbox" name="remember" style="transform: scale(1.5);"> Remember Me</label>
+            </div>
             <button type="submit" class="login-button">Login</button>
         </form>
+        <p>Don't have an account? <a href="{{ url_for('app_views.signup') }}">Sign up for free</a>.</p>
     </div>
 </body>
 </html>

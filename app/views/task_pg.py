@@ -5,7 +5,7 @@ from models.engine import Session
 from views import app_views
 
 @app_views.route('/tasks', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def manage_tasks():
     if request.method == 'POST':
         data = request.json

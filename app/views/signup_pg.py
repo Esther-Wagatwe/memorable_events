@@ -4,7 +4,7 @@ from views.decorators import login_required
 from models.engine import Session
 from views import app_views
 
-@app_views.route('/sign_in/')
+@app_views.route('/accounts/signup/')
 # @login_required
-def sign_up():
-    return render_template('vendor.html')
+def signup():
+    return render_template('signup.html')
