@@ -1,5 +1,5 @@
 from flask import request, redirect, url_for, render_template, jsonify
-from views.decorators import login_required
+from flask_login import login_required
 from models.task import Task
 from models.engine import Session
 from views import app_views
@@ -7,7 +7,7 @@ import datetime
 
 
 @app_views.route('/tasks', methods=['GET'])
-# @login_required
+@login_required
 def get_tasks():
     session = Session()
     tasks = session.query(Task).all()

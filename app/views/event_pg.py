@@ -1,28 +1,46 @@
-from views.decorators import login_required
+from flask_login import login_required
 from flask import request, redirect, url_for, render_template, jsonify
-from models import Event
+from flask_login import current_user
+from models import Event, EventStatus 
 from views import app_views
+from sqlalchemy.orm import joinedload
 from models.engine import Session
 
+
 @app_views.route('/events', methods=['GET'])
-# @login_required
+@login_required
 def get_events():
     session = Session()
     try:
-        events = session.query(Event).all()
-        return render_template('event.html', events=events)
+        events = session.query(Event).filter(Event.status == EventStatus.ACTIVE).all()
+        event_data = []
+        for event in events:
+            event_data.append({
+                'id': event.event_id,
+                'name': event.name,
+                'date': event.date.strftime('%Y-%m-%d'),
+                'status': event.status.name
+            })
+        return render_template('event.html', events=event_data)
+        # return jsonify([event.serialize() for event in events])
     finally:
         session.close()
-    return render_template('event.html')
 
 @app_views.route('/events/<int:event_id>', methods=['GET'])
-def get_event(event_id):
+@login_required 
+def event_details(event_id):
     session = Session()
     try:
-        event = session.query(Event).get(event_id)
+        event = session.query(Event).options(
+            joinedload(Event.guests),
+            joinedload(Event.vendors),
+            joinedload(Event.tasks)
+        ).filter(Event.event_id == event_id, Event.status == EventStatus.ACTIVE).first()
+
         if not event:
             return jsonify({'error': 'Event not found'}), 404
-        return jsonify(event.serialize()), 200
+
+        return render_template('event_details.html', event=event, user_id=current_user.user_id)
     finally:
         session.close()
 
@@ -65,10 +83,10 @@ def update_event(event_id):
         #     event.owner_id = data['owner_id']
 
         session.commit()
-        return jsonify({'message': 'Event updated successfully', 'event': event.serialize()}), 200
+        return jsonify({'success': True, 'message': 'Event updated successfully', 'event': event.serialize()}), 200
     except Exception as e:
         session.rollback()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'success': False, 'error': str(e)}), 500
     finally:
         session.close()
 

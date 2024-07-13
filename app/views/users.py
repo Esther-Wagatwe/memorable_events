@@ -1,6 +1,6 @@
 from flask import Flask, request, session, redirect, url_for, render_template, jsonify
 from models.engine import Session
-from models import User
+from models import User, Event, Guest, Invitation, Task, Reviews, Vendor
 from views import app_views
 
 @app_views.route('/users/', methods=['GET'])
@@ -37,19 +37,48 @@ def create_user():
 @app_views.route('/users/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
     session = Session()
-
-    user = session.query(User).filter_by(user_id=user_id).first()
-
+    
+    user = session.get(User, user_id)
+    
     if not user:
         session.close()
         return jsonify({'error': 'User not found'}), 404
-
+    
     try:
+        with session.no_autoflush:
+            events = session.query(Event).filter(Event.owner_id == user_id).all()
+            
+            for event in events:
+                guests = session.query(Guest).filter_by(event_id=event.event_id).all()
+                for guest in guests:
+                    session.delete(guest)
+
+                vendors = session.query(Vendor).filter_by(event_id=event.event_id).all()
+                for vendor in vendors:
+                    session.delete(vendor)
+
+                tasks = session.query(Task).filter_by(event_id=event.event_id).all()
+                for task in tasks:
+                    session.delete(task)
+
+                invitations = session.query(Invitation).filter_by(event_id=event.event_id).all()
+                for invitation in invitations:
+                    session.delete(invitation)
+
+                reviews = session.query(Reviews).filter(Reviews.vendor_id.in_(
+                    session.query(Vendor.vendor_id).filter_by(event_id=event.event_id)
+                )).all()
+                for review in reviews:
+                    session.delete(review)
+
+                session.delete(event)
+
         session.delete(user)
         session.commit()
-        session.close()
-        return jsonify({'message': 'User deleted successfully'}), 200
+        
+        return jsonify({'message': 'User and associated records deleted successfully'}), 200
     except Exception as e:
         session.rollback()
-        session.close()
         return jsonify({'error': 'Failed to delete user', 'details': str(e)}), 500
+    finally:
+        session.close()

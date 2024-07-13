@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/event_details.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1>{{ event.name }}</h1>
+<p><strong>Date:</strong> {{ event.date }}</p>
+<p><strong>Location:</strong> {{ event.location }}</p>
+<p><strong>Description:</strong> {{ event.description }}</p>
+
+<!-- Event Details Section -->
+<h2>Event Details</h2>
+<table class="event-details-table">
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Event Name:</strong></td>
+            <td><input type="text" id="event-name-input" value="{{ event.name }}" disabled></td>
+            <td><button class="change-button" data-attribute="name" onclick="editEventAttribute('name')">Change Event Name</button></td>
+        </tr>
+        <tr>
+            <td><strong>Event Date:</strong></td>
+            <td><input type="date" id="event-date-input" value="{{ event.date }}" disabled></td>
+            <td><button class="change-button" data-attribute="date" onclick="editEventAttribute('date')">Change Event Date</button></td>
+        </tr>
+        <tr>
+            <td><strong>Event Description:</strong></td>
+            <td><textarea id="event-description-input" disabled>{{ event.description }}</textarea></td>
+            <td><button class="change-button" data-attribute="description" onclick="editEventAttribute('description')">Change Event Description</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Guests Section -->
+<h2>Guests</h2>
+{% if event.guests %}
+<div class="filter">
+    <label for="filter-status">Filter by Status:</label>
+    <select id="filter-status">
+        <option value="all">All</option>
+        <option value="accepted">Accepted</option>
+        <option value="pending">Pending</option>
+        <option value="declined">Declined</option>
+    </select>
+</div>
+<table class="guests-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Invitation Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for guest in event.guests %}
+        <tr>
+            <td>{{ guest.name }}</td>
+            <td>{{ guest.email }}</td>
+            <td>{{ guest.phone }}</td>
+            <td>{{ guest.status }}</td>
+            <td>
+                <button class="delete-guest-button" data-id="{{ guest.guest_id }}">Delete</button>
+                <button class="send-invitation-button">Send Invitation</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No guests</p>
+{% endif %}
+<button class="add-guest-button">Add Guest</button>
+
+<!-- Vendors Section -->
+<h2>Vendors</h2>
+{% if event.vendors %}
+<div class="vendors-list">
+    {% for vendor in event.vendors %}
+    <div class="vendor">
+        <p><strong>Name:</strong> {{ vendor.name }}</p>
+        <p><strong>Type:</strong> {{ vendor.type }}</p>
+        <p><strong>Description:</strong> {{ vendor.description }}</p>
+        
+        <h3><strong>Vendor Reviews</strong></h3>
+        {% if vendor.reviews %}
+        <ul>
+            {% for review in vendor.reviews %}
+            <li>
+                <p><strong>Review:</strong> {{ review.comment }}</p>
+                <p><strong>Rating:</strong>
+                    {% for i in range(1, 6) %}
+                        <img src="{{ url_for('static', filename='images/yellow_star.png') }}" 
+                             alt="star" 
+                             class="star" 
+                             style="width: 20px; height: 20px; {% if i > review.rating %} display: none; {% endif %}">
+                    {% endfor %}
+                </p>
+                <p><strong>Date:</strong> {{ review.review_date }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No reviews available</p>
+        {% endif %}
+        
+        <button class="review-vendor-button" onclick="showReviewForm({{ vendor.vendor_id }})">Add Review</button>
+        <button class="remove-vendor-button" onclick="removeVendor({{ vendor.vendor_id }})">Remove Vendor</button>
+        
+        <form id="review-form-{{ vendor.vendor_id }}" class="review-form" style="display:none;" onsubmit="submitReview(event, {{ vendor.vendor_id }})">
+            <label for="rating">Rating (1-5):</label>
+            <input type="number" id="rating" name="rating" min="1" max="5" required>
+            
+            <label for="comment">Your Review:</label>
+            <textarea id="comment" name="comment" required></textarea>
+            
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No vendors</p>
+{% endif %}
+
+
+<!-- Tasks Section -->
+<h2>Tasks</h2>
+{% if event.tasks %}
+<table class="tasks-table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Due Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in event.tasks %}
+        <tr>
+            <td>{{ task.description }}</td>
+            <td>{{ task.status }}</td>
+            <td>{{ task.due_date }}</td>
+            <td>
+                <button class="edit-task-button">Edit</button>
+                <button class="delete-task-button">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No tasks</p>
+{% endif %}
+
+<!-- Update Event Button -->
+<button class="update-event-button" onclick="updateEvent()">Update Event</button>
+
+<script>
+function editEventAttribute(attribute) {
+    const inputId = `event-${attribute}-input`;
+    const inputElement = document.getElementById(inputId);
+    inputElement.disabled = !inputElement.disabled;
+    if (!inputElement.disabled) {
+        inputElement.focus();
+    } else {
+        const newValue = inputElement.value;
+        fetch(`/events/{{ event.event_id }}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ [attribute]: newValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert('Event updated successfully');
+            } else {
+                alert(`Failed to update event: ${data.error}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to update event');
+        });
+    }
+}
+
+function updateEvent() {
+    const name = document.getElementById('event-name-input').value;
+    const date = document.getElementById('event-date-input').value;
+    const description = document.getElementById('event-description-input').value;
+
+    fetch(`/events/{{ event.event_id }}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, date, description })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert('Event updated successfully');
+        } else {
+            alert(`Failed to update event: ${data.error}`);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to update event');
+    });
+}
+
+function showReviewForm(vendorId) {
+    const form = document.getElementById(`review-form-${vendorId}`);
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+function submitReview(event, vendorId) {
+    event.preventDefault();
+    const form = event.target;
+    const comment = form.comment.value;
+    const rating = form.rating.value;
+
+    fetch('/reviews/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            vendor_id: vendorId,
+            comment: comment,
+            rating: rating,
+            event_id: {{ event.event_id }}
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert('Review submitted successfully');
+            location.reload();
+        } else {
+            alert(`Failed to submit review: ${data.error}`);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to submit review');
+    });
+}
+
+
+function removeVendor(vendorId) {
+    fetch(`/vendors/${vendorId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert('Vendor removed successfully');
+            location.reload();
+        } else {
+            alert(`Failed to remove vendor: ${data.error}`);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to remove vendor');
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Add Guest functionality
+    document.querySelector('.add-guest-button').addEventListener('click', () => {
+        const guestData = {
+            name: prompt("Enter guest name:"),
+            email: prompt("Enter guest email:"),
+            phone: prompt("Enter guest phone:"),
+            status: "pending", // Default status
+            event_id: event_id // Pass the current event ID
+        };
+
+        fetch('/guests/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(guestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (response.ok) {
+                location.reload(); // Refresh the page to show the new guest
+            } else {
+                alert(data.error);
+            }
+        });
+    });
+
+    // Delete Guest functionality
+    document.querySelectorAll('.delete-guest-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const guestId = button.getAttribute('data-id');
+
+            fetch(`/guests/${guestId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload(); // Refresh the page to remove the guest
+                } else {
+                    response.json().then(data => alert(data.error));
+                }
+            });
+        });
+    });
+});
+
+</script>
+{% endblock %}

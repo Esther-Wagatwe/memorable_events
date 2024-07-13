@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/task.css') }}"> 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/guest.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/event_details.css') }}">
+
     <script>
         function toggleMenu() {
             var menu = document.getElementById("sidebarMenu");
@@ -36,7 +38,7 @@
             </div>
         </div>
         <div class="header-right">
-            <a href="/logout">Log Out</a>
+            <a href="/accounts/logout">Log Out</a>
         </div>
     </header>
 

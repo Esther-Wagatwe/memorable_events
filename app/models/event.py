@@ -1,6 +1,12 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from . import Base
+import enum
+
+class EventStatus(enum.Enum):
+    ACTIVE = "active"
+    DELETED = "deleted"
+    ARCHIVED = "archived"
 
 class Event(Base):
     __tablename__ = 'Event'
@@ -11,6 +17,7 @@ class Event(Base):
     date = Column(Date, nullable=False)
     name = Column(String(45), nullable=False)
     owner_id = Column(Integer, ForeignKey('User.user_id'), nullable=False)
+    status = Column(Enum(EventStatus), default=EventStatus.ACTIVE)
 
     owner = relationship('User', back_populates='events')
     guests = relationship('Guest', back_populates='event')

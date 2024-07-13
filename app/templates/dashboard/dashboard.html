@@ -3,7 +3,7 @@
 {% block content %}
 <div class="dashboard">
     <div class="total-events-box">
-        <h2>Total Events: <span class="total-events-count">10</span></h2>
+        <h2>Total Events: <span class="total-events-count">{{ total_events }}</span></h2>
     </div>
     <table class="events-table">
         <thead>
@@ -16,27 +16,15 @@
             </tr>
         </thead>
         <tbody>
+            {% for event in events %}
             <tr>
-                <td><a href="/events/1">Birthday Party</a></td>
-                <td>2024-07-10</td>
-                <td>50</td>
-                <td>8</td>
-                <td>Planned</td>
+                <td><a href="/events/{{ event.id }}">{{ event.name }}</a></td>
+                <td>{{ event.date }}</td>
+                <td>{{ event.total_guests }}</td>
+                <td>{{ event.total_vendors }}</td>
+                <td>{{ event.status }}</td>
             </tr>
-            <tr>
-                <td><a href="/events/2">House Party</a></td>
-                <td>2024-08-15</td>
-                <td>30</td>
-                <td>2</td>
-                <td>Ongoing</td>
-            </tr>
-            <tr>
-                <td><a href="/events/3">Friends-coming</a></td>
-                <td>2024-09-20</td>
-                <td>20</td>
-                <td>4</td>
-                <td>Ongoing</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
     <a href="/events/create" class="create-event-link">Create New Event</a>

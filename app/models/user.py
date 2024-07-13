@@ -1,9 +1,10 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from . import Base  # Import Base from models/__init__.py
+from . import Base
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class User(Base):
+class User(Base, UserMixin):
     __tablename__ = 'User'
 
     user_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -14,6 +15,9 @@ class User(Base):
     events = relationship('Event', back_populates='owner')
     reviews = relationship('Reviews', back_populates='user')  
 
+    def get_id(self):
+        return self.user_id
+    
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 

@@ -1,12 +1,12 @@
 from flask import request, redirect, url_for, render_template, jsonify
-from views.decorators import login_required
+from flask_login import login_required
 from models import Vendor
 from models.engine import Session
 from views import app_views
 
 
 @app_views.route('/vendors/', methods=['GET'])
-# @login_required
+@login_required
 def list_vendors():
     session = Session()
     vendors = session.query(Vendor).all()

@@ -8,5 +8,5 @@ from models.engine import *
 from models.guest import *
 from models.invitation import *
 from models.reviews import *
-# from models.task import *
+from models.task import *
 from models.vendor import *
