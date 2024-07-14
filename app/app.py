@@ -5,6 +5,7 @@ import secrets
 from models import User
 from models.engine import Session
 from flask_login import LoginManager
+from config import init_app
 
 
 app = Flask(__name__)
@@ -13,6 +14,8 @@ app.secret_key = secrets.token_hex(16)
 
 app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
+
+mail = init_app(app)
 
 db_user = getenv('DB_USER')
 db_password = getenv('DB_PASSWORD')

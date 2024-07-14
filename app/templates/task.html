@@ -8,6 +8,7 @@
         <thead>
             <tr>
                 <th>Task Description</th>
+                <th>Event</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -16,18 +17,13 @@
             {% for task in tasks %}
             <tr data-id="{{ task.task_id }}">
                 <td>{{ task.description }}</td>
+                <td>{{ task.event.name }}</td>
                 <td>{{ task.status }}</td>
                 <td>
-                    <button class="edit-button">Edit</button>
-                    <button class="delete-button">Delete</button>
+                    <a href="/events/{{ task.event_id }}" class="edit-button">Edit</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    
-    <!-- Add New Task Button -->
-    <div style="text-align: left; margin-top: 10px;">
-        <button class="add-button">Add New Task</button>
-    </div>
 {% endblock %}

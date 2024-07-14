@@ -20,9 +20,16 @@ def add_guest():
         status=data.get('status'),
         event_id=data.get('event_id')
     )
-    session.add(new_guest)
-    session.commit()
-    return jsonify(new_guest.serialize()), 201
+    try:
+        session.add(new_guest)
+        session.commit()
+        return jsonify(new_guest.serialize()), 201
+    except Exception as e:
+        session.rollback()
+        print(f"Error adding guest: {e}")
+        return jsonify({"error": "Failed to add guest"}), 500
+    finally:
+        session.close()
 
 @app_views.route('/guests/<int:guest_id>', methods=['DELETE'])
 def delete_guest(guest_id):

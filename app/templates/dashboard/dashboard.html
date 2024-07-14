@@ -12,7 +12,6 @@
                 <th>Date</th>
                 <th>Total Guests</th>
                 <th>Total Vendors</th>
-                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -22,11 +21,10 @@
                 <td>{{ event.date }}</td>
                 <td>{{ event.total_guests }}</td>
                 <td>{{ event.total_vendors }}</td>
-                <td>{{ event.status }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="/events/create" class="create-event-link">Create New Event</a>
+    <a href="/events/{event_id}/" class="create-event-link">Add New Event</a>
 </div>
 {% endblock %}

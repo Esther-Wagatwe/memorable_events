@@ -1,5 +1,6 @@
 from flask import request, redirect, url_for, render_template, jsonify
 from flask_login import login_required
+from sqlalchemy.orm import joinedload
 from models.task import Task
 from models.engine import Session
 from views import app_views
@@ -7,10 +8,10 @@ import datetime
 
 
 @app_views.route('/tasks', methods=['GET'])
-@login_required
+# @login_required
 def get_tasks():
     session = Session()
-    tasks = session.query(Task).all()
+    tasks = session.query(Task).options(joinedload(Task.event)).all()
     session.close()
     # return jsonify([task.serialize() for task in tasks])
     return render_template('task.html', tasks=tasks)
@@ -79,7 +80,6 @@ def edit_task(task_id):
         session.commit()
         session.close()
         return jsonify({'message': 'Task updated successfully'})
-    
     except Exception as e:
         session.rollback()
         return jsonify({'error': str(e)}), 500

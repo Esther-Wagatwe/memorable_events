@@ -1,109 +1,39 @@
-.event-details {
-    font-size: 18px;
-    margin: 20px;
-}
-
-.event-title {
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-
 .change-button,
 .save-button,
-.delete-button,
 .send-invitation-button,
 .add-button,
-.review-button,
 .edit-task-button,
 .delete-task-button,
-.update-event-button {
+.update-event-button,
+.add-guest-button,
+.add-task-button {
     border-radius: 12px;
     padding: 10px;
     margin: 5px;
     cursor: pointer;
 }
+.delete-guest-button,
+.remove-vendor-button,
+.review-vendor-button {
+    border-radius: 15px;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+}
 
-.change-button {
+.add-guest-button,
+.add-task-button,
+.edit-task-button,
+.review-vendor-button {
     background-color: #4CAF50; /* Green */
     color: white;
 }
 
-.save-button {
-    background-color: #2196F3; /* Blue */
+.delete-task-button,
+.remove-vendor-button,
+.delete-guest-button {
+    background-color: #f44336;
     color: white;
-}
-
-.delete-button {
-    background-color: #f44336; /* Red */
-    color: white;
-}
-
-.send-invitation-button {
-    background-color: #FFC107; /* Yellow */
-    color: black;
-}
-
-.add-button {
-    background-color: #8BC34A; /* Light Green */
-    color: white;
-}
-
-.review-button {
-    background-color: #FF9800; /* Orange */
-    color: white;
-}
-
-.edit-task-button {
-    background-color: #673AB7; /* Deep Purple */
-    color: white;
-}
-
-.delete-task-button {
-    background-color: #f44336; /* Red */
-    color: white;
-}
-
-.update-event-button {
-    background-color: #009688; /* Teal */
-    color: white;
-}
-
-/* Additional styling for tables */
-.guests-table, .vendors-table, .tasks-table, .event-details-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.guests-table th, .vendors-table th, .tasks-table th, .event-details-table th {
-    background-color: #f2f2f2;
-    padding: 12px;
-    text-align: left;
-}
-
-.guests-table tr:nth-child(even), .vendors-table tr:nth-child(even), .tasks-table tr:nth-child(even), .event-details-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-.vendors-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.vendor {
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
-
-.vendor p {
-    margin: 5px 0;
-}
-
-.review-vendor-button,
-.delete-vendor-button {
-    margin-right: 5px;
 }
 
 .vendors-list {
@@ -121,14 +51,23 @@
 
 .vendor p {
     margin: 5px 0;
-}
-
-.review-vendor-button,
-.delete-vendor-button {
-    margin-right: 5px;
 }
 
 .review-form {
     margin-top: 10px;
     display: none;
+}
+
+.remove-vendor-button {
+    margin-bottom: 15px;
+}
+
+.update-event-button {
+    background-color: blue;
+    color: white;
+}
+
+.send-invitation-button {
+    background-color: #FFC107;
+    color: black;
 }

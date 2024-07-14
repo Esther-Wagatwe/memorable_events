@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/event_details.css') }}">
+<script src="{{ url_for('static', filename='js/event_details.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -51,6 +51,7 @@
         <option value="declined">Declined</option>
     </select>
 </div>
+<button class="add-guest-button">Add Guest</button>
 <table class="guests-table">
     <thead>
         <tr>
@@ -79,7 +80,20 @@
 {% else %}
 <p>No guests</p>
 {% endif %}
-<button class="add-guest-button">Add Guest</button>
+
+<!-- Add Guest Form -->
+<div class="add-guest-form" style="display:none;">
+    <h3>Add New Guest</h3>
+    <form id="guest-form" onsubmit="submitGuestForm(event)">
+        <label for="guest-name">Name:</label>
+        <input type="text" id="guest-name" name="name" required><br>
+        <label for="guest-email">Email:</label>
+        <input type="email" id="guest-email" name="email" required><br>
+        <label for="guest-phone">Phone:</label>
+        <input type="text" id="guest-phone" name="phone" required><br>
+        <button type="submit">Add Guest</button>
+    </form>
+</div>
 
 <!-- Vendors Section -->
 <h2>Vendors</h2>
@@ -113,9 +127,8 @@
         <p>No reviews available</p>
         {% endif %}
         
+        <div></div>
         <button class="review-vendor-button" onclick="showReviewForm({{ vendor.vendor_id }})">Add Review</button>
-        <button class="remove-vendor-button" onclick="removeVendor({{ vendor.vendor_id }})">Remove Vendor</button>
-        
         <form id="review-form-{{ vendor.vendor_id }}" class="review-form" style="display:none;" onsubmit="submitReview(event, {{ vendor.vendor_id }})">
             <label for="rating">Rating (1-5):</label>
             <input type="number" id="rating" name="rating" min="1" max="5" required>
@@ -125,6 +138,10 @@
             
             <button type="submit">Submit Review</button>
         </form>
+        </div>
+        <div>
+        <button class="remove-vendor-button" onclick="removeVendor({{ vendor.vendor_id }})">Remove Vendor</button>
+        </div>
     </div>
     {% endfor %}
 </div>
@@ -132,9 +149,9 @@
 <p>No vendors</p>
 {% endif %}
 
-
 <!-- Tasks Section -->
 <h2>Tasks</h2>
+<button class="add-task-button" onclick="showAddTaskForm()">Add Task</button>
 {% if event.tasks %}
 <table class="tasks-table">
     <thead>
@@ -148,12 +165,18 @@
     <tbody>
         {% for task in event.tasks %}
         <tr>
-            <td>{{ task.description }}</td>
-            <td>{{ task.status }}</td>
-            <td>{{ task.due_date }}</td>
+            <td><input type="text" value="{{ task.description }}" disabled></td>
             <td>
-                <button class="edit-task-button">Edit</button>
-                <button class="delete-task-button">Delete</button>
+                <select disabled>
+                    <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>Completed</option>
+                </select>
+            </td>
+            <td><input type="date" value="{{ task.due_date }}" disabled></td>
+            <td>
+                <button class="edit-task-button" data-id="{{ task.task_id }}" onclick="editTask(this)">Edit</button>
+                <button class="save-task-button" data-id="{{ task.task_id }}" style="display:none;" onclick="saveTask(this)">Save</button>
+                <button class="delete-task-button" data-id="{{ task.task_id }}" onclick="deleteTask(this)">Delete</button>
             </td>
         </tr>
         {% endfor %}
@@ -163,173 +186,24 @@
 <p>No tasks</p>
 {% endif %}
 
+<!-- Add Task Form -->
+<div class="add-task-form" style="display:none;">
+    <h3>Add New Task</h3>
+    <form id="task-form" onsubmit="submitTaskForm(event)">
+        <label for="task-desc">Description:</label>
+        <input type="text" id="task-desc" name="description" required><br>
+        <label for="task-status">Status:</label>
+        <select id="task-status" name="status" required>
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+        </select><br>
+        <label for="task-due-date">Due Date:</label>
+        <input type="date" id="task-due-date" name="due_date" required><br>
+        <button type="submit">Add Task</button>
+    </form>
+</div>
+
 <!-- Update Event Button -->
 <button class="update-event-button" onclick="updateEvent()">Update Event</button>
 
-<script>
-function editEventAttribute(attribute) {
-    const inputId = `event-${attribute}-input`;
-    const inputElement = document.getElementById(inputId);
-    inputElement.disabled = !inputElement.disabled;
-    if (!inputElement.disabled) {
-        inputElement.focus();
-    } else {
-        const newValue = inputElement.value;
-        fetch(`/events/{{ event.event_id }}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ [attribute]: newValue })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                alert('Event updated successfully');
-            } else {
-                alert(`Failed to update event: ${data.error}`);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to update event');
-        });
-    }
-}
-
-function updateEvent() {
-    const name = document.getElementById('event-name-input').value;
-    const date = document.getElementById('event-date-input').value;
-    const description = document.getElementById('event-description-input').value;
-
-    fetch(`/events/{{ event.event_id }}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name, date, description })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert('Event updated successfully');
-        } else {
-            alert(`Failed to update event: ${data.error}`);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to update event');
-    });
-}
-
-function showReviewForm(vendorId) {
-    const form = document.getElementById(`review-form-${vendorId}`);
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-}
-
-function submitReview(event, vendorId) {
-    event.preventDefault();
-    const form = event.target;
-    const comment = form.comment.value;
-    const rating = form.rating.value;
-
-    fetch('/reviews/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            vendor_id: vendorId,
-            comment: comment,
-            rating: rating,
-            event_id: {{ event.event_id }}
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert('Review submitted successfully');
-            location.reload();
-        } else {
-            alert(`Failed to submit review: ${data.error}`);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to submit review');
-    });
-}
-
-
-function removeVendor(vendorId) {
-    fetch(`/vendors/${vendorId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert('Vendor removed successfully');
-            location.reload();
-        } else {
-            alert(`Failed to remove vendor: ${data.error}`);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to remove vendor');
-    });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Add Guest functionality
-    document.querySelector('.add-guest-button').addEventListener('click', () => {
-        const guestData = {
-            name: prompt("Enter guest name:"),
-            email: prompt("Enter guest email:"),
-            phone: prompt("Enter guest phone:"),
-            status: "pending", // Default status
-            event_id: event_id // Pass the current event ID
-        };
-
-        fetch('/guests/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(guestData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (response.ok) {
-                location.reload(); // Refresh the page to show the new guest
-            } else {
-                alert(data.error);
-            }
-        });
-    });
-
-    // Delete Guest functionality
-    document.querySelectorAll('.delete-guest-button').forEach(button => {
-        button.addEventListener('click', () => {
-            const guestId = button.getAttribute('data-id');
-
-            fetch(`/guests/${guestId}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (response.ok) {
-                    location.reload(); // Refresh the page to remove the guest
-                } else {
-                    response.json().then(data => alert(data.error));
-                }
-            });
-        });
-    });
-});
-
-</script>
 {% endblock %}
