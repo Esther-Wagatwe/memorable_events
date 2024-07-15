@@ -1,5 +1,3 @@
----
-
 # Memorable Events
 
 Memorable Events is a web application designed to help users plan and manage personal social events such as weddings. The application provides features for event planning, task management, vendor management, guest management, sending invitations, and tracking invitation responses.
