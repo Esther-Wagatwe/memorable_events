@@ -90,6 +90,6 @@ Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTIN
 ## Contact
 
 For any inquiries, please contact:
-- **Name**: [Esther Wagatwe]
-- **Email**: [estherwagatwe@gmail.com]
+- **Author**: Esther Wagatwe
+- **Email**: estherwagatwe@gmail.com
 - **Location**: Nairobi, Kenya
