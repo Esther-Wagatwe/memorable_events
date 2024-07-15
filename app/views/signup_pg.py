@@ -27,4 +27,4 @@ def signup():
         session_db.close()
         flash('Registration successful. Please log in.')
         return redirect(url_for('app_views.login'))
-    return render_template('signup.html')
+    return render_template('/auth/signup.html')
