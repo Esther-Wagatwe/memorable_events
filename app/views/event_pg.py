@@ -22,7 +22,6 @@ def get_events():
                 'status': event.status.name
             })
         return render_template('event.html', events=event_data)
-        # return jsonify([event.serialize() for event in events])
     finally:
         session.close()
 

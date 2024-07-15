@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memorable Events </title>
+    <title>Memorable Events</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
 </head>
 <body>
@@ -15,6 +15,7 @@
                     <li><a href="{{ url_for('app_views.dashboard') }}">Home</a></li>
                     <li><a href="{{ url_for('app_views.login') }}">Sign In</a></li>
                     <li><a href="{{ url_for('app_views.signup') }}">Sign Up</a></li>
+                    <li><a href="{{ url_for('app_views.about_page') }}">About</a></li>
                 </ul>
             </nav>
         </div>
@@ -24,15 +25,15 @@
     <section class="hero">
         <img src="{{ url_for('static', filename='images/image1.jpg') }}" alt="Hero Image" class="hero-image">
         <div class="hero-content">
-            <h1>Plan and Manage Your Events with Ease</h1>
-            <p>Memorable Events: Your Personal Event Planning Assistant</p>
-            <a href="#" class="cta-button">Get Started</a>
+            <h1>Memorable Events</h1>
+            <p>Plan and Manage Your Events with Ease, Your Personal Event Planning Assistant</p>
+            <a href="{{ url_for('app_views.signup') }}" class="cta-button">Get Started</a>
         </div>
     </section>
 
     <!-- Features Section -->
     <section class="features">
-        <h2>Here are some of the benefits we offer</h2>
+        <h2>Have a look at some of the benefits we offer</h2>
         <div class="feature">
             <img src="{{ url_for('static', filename='images/event_icon.png') }}" alt="Event Planning Icon">
             <h3>Event Planning</h3>
@@ -46,7 +47,7 @@
         <div class="feature">
             <img src="{{ url_for('static', filename='images/vendor_icon.jpeg') }}" alt="Vendor Coordination Icon">
             <h3>Vendor Coordination</h3>
-            <p>Connect with vendors and manage services for your events.</p>
+            <p>Connect with vendors of choice and manage services for your events.</p>
         </div>
         <div class="feature">
             <img src="{{ url_for('static', filename='images/task_icon.jpeg') }}" alt="Task Tracking Icon">
@@ -55,7 +56,6 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
     <section class="testimonials">
         <div class="testimonial">
             <p class="testimonial-text">"Memorable Events made planning my wedding so much simpler. Highly recommended!"</p>
@@ -65,6 +65,20 @@
             <p class="testimonial-text">"I use Memorable Events for all our corporate functions. It's a game-changer!"</p>
             <p class="testimonial-author">- John Smith, Event Manager</p>
         </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <h2>About Memorable Events</h2>
+        <p>This project was inspired by the challenges my family faced while planning a wedding this year.</p>
+        <p>The complexity and time-consuming nature of organizing such an event led me to create a solution that simplifies the process for others.</p>
+        <p>For more information about the project and to view my work, visit the GitHub repository <a href="https://github.com/Esther-Wagatwe/memorable_events" target="_blank">here</a>.</p>
+        <p>Project by: Esther Wagatwe</p>
+        <ul>
+            <li><a href="https://www.linkedin.com/in/esther-wagatwe-b422a523b/" target="_blank">LinkedIn</a></li>
+            <li><a href="https://github.com/Esther-Wagatwe/" target="_blank">GitHub</a></li>
+            <li><a href="https://x.com/Esther_WagatweM?t=Sb9jAE7-8Mr4eSUju2vxIQ&s=09" target="_blank">Twitter</a></li>
+        </ul>
     </section>
 
     <!-- Custom Footer -->
