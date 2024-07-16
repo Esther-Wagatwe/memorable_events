@@ -10,3 +10,9 @@ from models.invitation import *
 from models.reviews import *
 from models.task import *
 from models.vendor import *
+
+# Create all tables in the engine.
+Base.metadata.create_all(engine)
+
+
+
