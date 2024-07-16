@@ -1,53 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Memorable Events</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"> 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">      
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/events.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/task.css') }}"> 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/guest.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/event_details.css') }}">
-
-    <script>
-        function toggleMenu() {
-            var menu = document.getElementById("sidebarMenu");
-            var main = document.getElementById("mainContent");
-            if (menu.style.display === "none") {
-                menu.style.display = "block";
-                main.style.marginLeft = "200px"; 
-            } else {
-                menu.style.display = "none";
-                main.style.marginLeft = "0";
-            }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memorable Events - Your Event Planning Partner</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f39c12;
+            --text-color: #333;
+            --background-color: #f5f7fa;
+            --card-background: #ffffff;
+            --border-color: #e0e0e0;
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
         }
-    </script>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg,
+                    var(--gradient-start),
+                    var(--gradient-end));
+            color: white;
+            padding: 1rem 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+        .dropdown .dropbtn {
+            border: none;
+            outline: none;
+            color: white;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            border-radius: 8px;
+            margin-right: 5px;
+        }
+        .dropdown-content a {
+            float: none;
+            color: black;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            padding-left: 5px;
+            padding-right: 5px;
+            border-radius: 5px;
+
+        }
+        .dropdown-content a:hover {
+            background-color: var(--border-color);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+
+        /*End Drop down styles*/
+
+        main {
+            padding: 2rem 0;
+        }
+    </style>
+
+    {% block page_styles %}{% endblock page_styles %}
+
 </head>
+
 <body>
     <header>
-        <div class="header-left">
-            <button onclick="toggleMenu()">☰</button>
-            <div id="sidebarMenu" class="menu">
-                <a href="/">Events</a>
-                <!-- <a href="/events">Events</a> -->
-                <a href="/vendors">Vendors</a>
-                <a href="/tasks">Tasks</a>
-                <!-- <a href="/guests">Guests</a> -->
-            </div>
-        </div>
-        <div class="header-right">
-            <a href="/accounts/logout">Log Out</a>
-        </div>
+        <nav class="container">
+            <div class="logo">Memorable Events</div>
+            <ul class="nav-links">
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/events">My Events</a></li>
+                <li><a href="#">Vendors</a></li>
+                <li>
+                    <div class="dropdown">
+                        <button class="dropbtn">
+                            <img src="https://randomuser.me/api/portraits/lego/8.jpg" alt="Profile" class="profile-image">
+                        </button>
+                        <div class="dropdown-content">
+                            <a>{{ current_user.username }}</a>
+                            <a href="/accounts/logout">Logout</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
     </header>
 
-    <main id="mainContent">
+    <main class="container">
         {% block content %}{% endblock %}
     </main>
 
-    <footer>
-        © 2024 Memorable Events. All rights reserved.
-    </footer>
+
+    {% block page_scripts %}{% endblock page_scripts %}
+
 </body>
+
 </html>

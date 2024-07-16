@@ -1,503 +1,741 @@
 {% extends "base.html" %}
 
+{% block page_styles %}
+<style>
+    .section-title {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .event-management {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .event-sidebar {
+        background-color: var(--card-background);
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+    }
+
+    .event-info h2 {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .event-info p {
+        margin-bottom: 0.5rem;
+    }
+
+    .progress-container {
+        margin-top: 1rem;
+    }
+
+    .progress-bar {
+        background-color: #e0e0e0;
+        border-radius: 10px;
+        height: 10px;
+        overflow: hidden;
+    }
+
+    .progress {
+        height: 100%;
+        background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+        transition: width 0.3s ease;
+    }
+
+    .management-tabs {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .contact-link {
+        text-decoration: none;
+        color: var(--text-color);
+    }
+
+    .tab-btn {
+        background-color: var(--card-background);
+        border: none;
+        padding: 0.8rem 1.2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .tab-btn.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .tab-content {
+        background-color: var(--card-background);
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+    }
+
+    .btn {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        color: white;
+        padding: 0.7rem 1.2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        .event-management {
+            grid-template-columns: 1fr;
+        }
+
+        .management-tabs {
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            flex: 1 0 calc(50% - 0.5rem);
+            margin-bottom: 0.5rem;
+        }
+    }
+</style>
+
+<style>
+
+    .tasks-content {
+        background-color: var(--card-background);
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        padding: 15px 10px;
+    }
+
+    .task-list {
+        list-style-type: none;
+    }
+
+    .task-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        padding: 0.5rem;
+        background-color: #f0f0f0;
+        border-radius: 6px;
+    }
+
+    .task-checkbox {
+        margin-right: 0.8rem;
+    }
+
+    .task-text {
+        flex-grow: 1;
+    }
+
+    .task-due-date {
+        font-size: 0.9rem;
+        color: #666;
+    }
+</style>
+
+<style>
+    .vendors-content {
+        background-color: var(--card-background);
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        padding: 15px 10px;
+    }
+
+    .vendor-actions-global {
+        margin-bottom: 5px;
+        margin-top: 0px;
+    }
+
+    .vendor-item {
+        list-style-type: none;
+        padding: 5px;
+        border: 1px solid var(--card-background);
+    }
+
+    .vendor-primary-details {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .vendor-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .vendor-details {
+        flex: 1;
+    }
+
+    .vendor-details h3 {
+        margin: 0 0 5px 0;
+    }
+
+    .vendor-details p {
+        margin: 0;
+    }
+</style>
+
+<style>
+    .guests-content {
+        background-color: var(--card-background);
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        padding: 15px 10px;
+    }
+
+    .guest-list {
+        list-style-type: none;
+    }
+
+    .guest-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .guest-item:last-child {
+        border-bottom: none;
+    }
+
+    .guest-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .guest-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 1rem;
+        object-fit: cover;
+    }
+
+    .guest-details h3 {
+        margin: 0;
+        font-size: 1.1rem;
+    }
+
+    .guest-details p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .guest-status {
+        font-size: 0.9rem;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+
+    .status-confirmed {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .status-declined {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .guest-actions button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+    }
+
+    .guest-summary {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        padding-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+        border-top: 2px solid var(--border-color);
+    }
+
+    .summary-item {
+        text-align: center;
+    }
+
+    .summary-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    .summary-label {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .guest-list-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+        margin-left: 20px;
+        margin-right: 20px;
+        padding-bottom: 5px;
+        border-bottom: 2px solid var(--border-color);
+    }
+</style>
+
+
+<style>
+
+    .budget-content {
+        background-color: var(--card-background);
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        padding: 15px 10px;
+    }
+
+    .budget-overview {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+
+    .budget-card {
+        background-color: var(--card-background);
+        border-radius: 8px;
+        padding: 1rem;
+        flex: 1;
+        margin: 0 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .budget-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .budget-card .amount {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    .budget-progress {
+        margin-top: 1rem;
+    }
+
+    .budget-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2rem;
+    }
+
+    .budget-table th,
+    .budget-table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .budget-table th {
+        background-color: var(--background-color);
+        font-weight: bold;
+    }
+
+    .budget-category {
+        display: flex;
+        align-items: center;
+    }
+
+    .category-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 0.5rem;
+    }
+
+    .status-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 0.5rem;
+    }
+
+    .status-under {
+        background-color: var(--success-color);
+    }
+
+    .status-on-track {
+        background-color: var(--warning-color);
+    }
+
+    .status-over {
+        background-color: var(--danger-color);
+    }
+    
+
+    @media (max-width: 768px) {
+        .event-management {
+            grid-template-columns: 1fr;
+        }
+
+        .management-tabs {
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            flex: 1 0 calc(50% - 0.5rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .budget-overview {
+            flex-direction: column;
+        }
+
+        .budget-card {
+            margin: 0.5rem 0;
+        }
+    }
+</style>
+
+{% endblock page_styles %}
+
+
+
 {% block content %}
-<h1>{{ event.name }}</h1>
-<p><strong>Date:</strong> {{ event.date }}</p>
-<p><strong>Location:</strong> {{ event.location }}</p>
-<p><strong>Description:</strong> {{ event.description }}</p>
+<h1 class="section-title">Manage Event: Sarah's Wedding</h1>
 
-<!-- Event Details Section -->
-<h2>Event Details</h2>
-<table class="event-details-table">
-    <thead>
-        <tr>
-            <th>Attribute</th>
-            <th>Value</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><strong>Event Name:</strong></td>
-            <td><input type="text" id="event-name-input" value="{{ event.name }}" disabled></td>
-            <td><button class="change-button" data-attribute="name" onclick="editEventAttribute('name')">Change Event Name</button></td>
-        </tr>
-        <tr>
-            <td><strong>Event Date:</strong></td>
-            <td><input type="date" id="event-date-input" value="{{ event.date }}" disabled></td>
-            <td><button class="change-button" data-attribute="date" onclick="editEventAttribute('date')">Change Event Date</button></td>
-        </tr>
-        <tr>
-            <td><strong>Event Description:</strong></td>
-            <td><textarea id="event-description-input" disabled>{{ event.description }}</textarea></td>
-            <td><button class="change-button" data-attribute="description" onclick="editEventAttribute('description')">Change Event Description</button></td>
-        </tr>
-    </tbody>
-</table>
-
-<!-- Guests Section -->
-<h2>Guests</h2>
-{% if event.guests %}
-<div class="filter">
-    <label for="filter-status">Filter by Status:</label>
-    <select id="filter-status">
-        <option value="all">All</option>
-        <option value="accepted">Accepted</option>
-        <option value="pending">Pending</option>
-        <option value="declined">Declined</option>
-    </select>
-</div>
-<button class="add-guest-button" onclick="toggleAddGuestForm()">Add Guest</button>
-<table class="guests-table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Invitation Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for guest in event.guests %}
-        <tr>
-            <td>{{ guest.name }}</td>
-            <td>{{ guest.email }}</td>
-            <td>{{ guest.phone }}</td>
-            <td>{{ guest.status }}</td>
-            <td>
-                <button class="delete-guest-button" data-id="{{ guest.guest_id }}" onclick="deleteGuest({{ guest.guest_id }})">Delete</button>
-                <button class="send-invitation-button" onclick="sendInvitation({{ event.event_id }}, {{ guest.guest_id }})">Send Invitation</button>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>No guests</p>
-{% endif %}
-
-<!-- Add Guest Form -->
-<div class="add-guest-form" style="display:none;">
-    <h3>Add New Guest</h3>
-    <form id="guest-form" onsubmit="submitGuestForm(event)">
-        <label for="guest-name">Name:</label>
-        <input type="text" id="guest-name" name="name" required><br>
-        <label for="guest-email">Email:</label>
-        <input type="email" id="guest-email" name="email" required><br>
-        <label for="guest-phone">Phone:</label>
-        <input type="text" id="guest-phone" name="phone" required><br>
-        <button type="submit">Add Guest</button>
-    </form>
-</div>
-
-<!-- Vendors Section -->
-<h2>Vendors</h2>
-{% if event.vendors %}
-<div class="vendors-list">
-    {% for vendor in event.vendors %}
-    <div class="vendor">
-        <p><strong>Name:</strong> {{ vendor.name }}</p>
-        <p><strong>Type:</strong> {{ vendor.type }}</p>
-        <p><strong>Description:</strong> {{ vendor.description }}</p>
-        
-        <h3><strong>Vendor Reviews</strong></h3>
-        {% if vendor.reviews %}
-        <ul>
-            {% for review in vendor.reviews %}
-            <li>
-                <p><strong>Review:</strong> {{ review.comment }}</p>
-                <p><strong>Rating:</strong>
-                    {% for i in range(1, 6) %}
-                        <img src="{{ url_for('static', filename='images/yellow_star.png') }}" 
-                             alt="star" 
-                             class="star" 
-                             style="width: 20px; height: 20px; {% if i > review.rating %} display: none; {% endif %}">
-                    {% endfor %}
-                </p>
-                <p><strong>Date:</strong> {{ review.review_date }}</p>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>No reviews available</p>
-        {% endif %}
-        
-        <div></div>
-        <button class="review-vendor-button" onclick="showReviewForm({{ vendor.vendor_id }})">Add Review</button>
-        <form id="review-form-{{ vendor.vendor_id }}" class="review-form" style="display:none;" onsubmit="submitReview(event, {{ vendor.vendor_id }})">
-            <label for="rating">Rating (1-5):</label>
-            <input type="number" id="rating" name="rating" min="1" max="5" required>
-            
-            <label for="comment">Your Review:</label>
-            <textarea id="comment" name="comment" required></textarea>
-            
-            <button type="submit">Submit Review</button>
-        </form>
+<div class="event-management">
+    <aside class="event-sidebar">
+        <div class="event-info">
+            <h2>Event Details</h2>
+            <p><strong>Date:</strong> August 15, 2023</p>
+            <p><strong>Time:</strong> 4:00 PM - 11:00 PM</p>
+            <p><strong>Location:</strong> Sunset Beach Resort</p>
+            <p><strong>Guests:</strong> 80</p>
+            <div class="progress-container">
+                <p><strong>Planning Progress:</strong></p>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 75%;"></div>
+                </div>
+            </div>
         </div>
-        <div>
-        <button class="remove-vendor-button" onclick="removeVendor({{ vendor.vendor_id }})">Remove Vendor</button>
+        <a href="#" class="btn">Edit Event Details</a>
+    </aside>
+
+    <section class="management-content">
+        <div class="management-tabs">
+            <button class="tab-btn active" data-tab="tasks">Tasks</button>
+            <button class="tab-btn" data-tab="vendors">Vendors</button>
+            <button class="tab-btn" data-tab="guests">Guest List</button>
+            <button class="tab-btn" data-tab="budget">Budget</button>
         </div>
-    </div>
-    {% endfor %}
+
+        <div class="tasks-content">
+            <ul class="task-list">
+                <li class="task-item">
+                    <input type="checkbox" class="task-checkbox" id="task1" checked="">
+                    <label for="task1" class="task-text">Book venue</label>
+                    <span class="task-due-date">Completed</span>
+                </li>
+                <li class="task-item">
+                    <input type="checkbox" class="task-checkbox" id="task2" checked="">
+                    <label for="task2" class="task-text">Hire photographer</label>
+                    <span class="task-due-date">Completed</span>
+                </li>
+                <li class="task-item">
+                    <input type="checkbox" class="task-checkbox" id="task3">
+                    <label for="task3" class="task-text">Order wedding cake</label>
+                    <span class="task-due-date">Due: July 1, 2023</span>
+                </li>
+                <li class="task-item">
+                    <input type="checkbox" class="task-checkbox" id="task4">
+                    <label for="task4" class="task-text">Send out invitations</label>
+                    <span class="task-due-date">Due: June 15, 2023</span>
+                </li>
+                <li class="task-item">
+                    <input type="checkbox" class="task-checkbox" id="task5">
+                    <label for="task5" class="task-text">Arrange transportation</label>
+                    <span class="task-due-date">Due: July 30, 2023</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="vendors-content" style="display: none;">
+            <div class="vendor-actions-global">
+                <button class="btn btn-primary">Add New Vendor</button>
+            </div>
+
+            <ul class="vendor-list">
+
+                {% for _ in "123" %}
+                <li class="vendor-item">
+                    <div class="vendor-row">
+                        <div class="vendor-primary-details">
+                            <img src="https://images.unsplash.com/reserve/xd45Y326SvKzSR3Nanc8_MRJ_8125-1.jpg"
+                                alt="Blooming Blossoms Florist" class="vendor-image">
+                            <div class="vendor-details">
+                                <h3>Blooming Blossoms Florist</h3>
+                                <p>Specializing in elegant wedding bouquets and floral arrangements.</p>
+                                <p><strong>Contact:</strong> Emily Rose | <a href="tel:+15551234567">555-123-4567</a>
+                                </p>
+                                <p><strong>Email:</strong> <a
+                                        href="mailto:jane@example.co.ke"><span>jane@example.co.ke</span></a>
+                                </p>
+                                <p><strong>Status:</strong> <span class="status confirmed">Confirmed</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vendor-actions" style="display: none;">
+                        <button class="btn btn-primary">Message</button>
+                        <button class="btn btn-secondary">View Contract</button>
+                    </div>
+                </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+
+        <div class="guests-content" style="display: none;">
+
+            <div class="guest-list-actions">
+                <button class="btn">Add New Guest</button>
+                <button class="btn">Send Reminders</button>
+                <button class="btn">Export Guest List</button>
+            </div>
+
+            <ul class="guest-list">
+
+                {% for _ in "12345678" %}
+                <li class="guest-item">
+                    <div class="guest-info">
+                        <img src="https://replicate.delivery/yhqm/6GEU6HxPoEK4Dlu7mk0KehRGSSCIc0J5erQoCjXT7CZohHJTA/out-0.png"
+                            alt="Emily Johnson" class="guest-avatar" width="50" height="50">
+                        <div class="guest-details">
+                            <h3>Emily Johnson</h3>
+                            <p><a class="contact-link" href="mailto:emily@gmail.com">emily@gmail.com</a> | <a
+                                    class="contact-link" href="tel:+2547225646654">07225646654</a></p>
+                        </div>
+                    </div>
+                    <span class="guest-status status-confirmed">Confirmed</span>
+                    <div class="guest-actions">
+                        <button>Edit</button>
+                        <button>Remove</button>
+                    </div>
+                </li>
+                {% endfor %}
+
+            </ul>
+
+            <div class="guest-summary">
+                <div class="summary-item">
+                    <div class="summary-number">65</div>
+                    <div class="summary-label">Confirmed</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">12</div>
+                    <div class="summary-label">Pending</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">3</div>
+                    <div class="summary-label">Declined</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">80</div>
+                    <div class="summary-label">Total</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="budget-content" style="display: none;">
+            <div class="budget-overview">
+                <div class="budget-card">
+                    <h3>Total Budget</h3>
+                    <div class="amount">Ksh.30,000</div>
+                </div>
+                <div class="budget-card">
+                    <h3>Spent</h3>
+                    <div class="amount">Ksh.22,500</div>
+                </div>
+                <div class="budget-card">
+                    <h3>Remaining</h3>
+                    <div class="amount">Ksh.7,500</div>
+                </div>
+            </div>
+
+            <div class="budget-progress">
+                <h3>Budget Progress</h3>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 75%;"></div>
+                </div>
+                <p>75% of budget used</p>
+            </div>
+
+            <table class="budget-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Budget</th>
+                        <th>Spent</th>
+                        <th>Remaining</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <div class="budget-category">
+                                Venue
+                            </div>
+                        </td>
+                        <td>Ksh.10,000</td>
+                        <td>Ksh.9,500</td>
+                        <td>Ksh.500</td>
+                        <td><span class="status-indicator status-on-track"></span>On Track</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="budget-category">
+                                Catering
+                            </div>
+                        </td>
+                        <td>Ksh.8,000</td>
+                        <td>Ksh.7,000</td>
+                        <td>Ksh.1,000</td>
+                        <td><span class="status-indicator status-under"></span>Under Budget</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="budget-category">
+                                Decor
+                            </div>
+                        </td>
+                        <td>Ksh.3,000</td>
+                        <td>Ksh.3,500</td>
+                        <td>-Ksh.500</td>
+                        <td><span class="status-indicator status-over"></span>Over Budget</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="budget-category">
+                                Entertainment
+                            </div>
+                        </td>
+                        <td>Ksh.2,500</td>
+                        <td>Ksh.2,000</td>
+                        <td>Ksh.500</td>
+                        <td><span class="status-indicator status-under"></span>Under Budget</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="budget-category">
+                                Attire
+                            </div>
+                        </td>
+                        <td>Ksh.3,500</td>
+                        <td>Ksh.3,500</td>
+                        <td>Ksh.0</td>
+                        <td><span class="status-indicator status-on-track"></span>On Track</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="budget-actions">
+                <button class="btn">Add Expense</button>
+                <button class="btn">Generate Report</button>
+            </div>
+        </div>
+
+    </section>
 </div>
-{% else %}
-<p>No vendors</p>
-{% endif %}
-
-<!-- Tasks Section -->
-<h2>Tasks</h2>
-<button class="add-task-button" onclick="showAddTaskForm()">Add Task</button>
-{% if event.tasks %}
-<table class="tasks-table">
-    <thead>
-        <tr>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Due Date</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for task in event.tasks %}
-        <tr>
-            <td><input type="text" value="{{ task.description }}" disabled></td>
-            <td>
-                <select disabled>
-                    <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>Pending</option>
-                    <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>Completed</option>
-                </select>
-            </td>
-            <td><input type="date" value="{{ task.due_date }}" disabled></td>
-            <td>
-                <button class="edit-task-button" data-id="{{ task.task_id }}" onclick="editTask(this)">Edit</button>
-                <button class="save-task-button" data-id="{{ task.task_id }}" style="display:none;" onclick="saveTask(this)">Save</button>
-                <button class="delete-task-button" data-id="{{ task.task_id }}" onclick="deleteTask(this)">Delete</button>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>No tasks</p>
-{% endif %}
-
-<!-- Add Task Form -->
-<div class="add-task-form" style="display:none;">
-    <h3>Add New Task</h3>
-    <form id="task-form" onsubmit="submitTaskForm(event)">
-        <label for="task-desc">Description:</label>
-        <input type="text" id="task-desc" name="description" required><br>
-        <label for="task-status">Status:</label>
-        <select id="task-status" name="status" required>
-            <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
-        </select><br>
-        <label for="task-due-date">Due Date:</label>
-        <input type="date" id="task-due-date" name="due_date" required><br>
-        <button type="submit">Add Task</button>
-    </form>
-</div>
-
-<button class="update-event-button" onclick="updateEvent()">Update Event</button>
-
-<script>
-function updateEvent() {
-const name = document.getElementById('event-name-input').value;
-const date = document.getElementById('event-date-input').value;
-const description = document.getElementById('event-description-input').value;
-
-fetch(`/events/{{ event.event_id }}`, {
-    method: 'PUT',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ name, date, description })
-})
-.then(response => response.json())
-.then(data => {
-    if (data.message) {
-        alert('Event updated successfully');
-        window.location.href = '/';
-    } else {
-        alert(`Failed to update event: ${data.error}`);
-    }
-})
-.catch(error => {
-    console.error('Error:', error);
-    alert('Failed to update event');
-});
-}
-
-function editEventAttribute(attribute) {
-    const inputId = `event-${attribute}-input`;
-    const inputElement = document.getElementById(inputId);
-    inputElement.disabled = !inputElement.disabled;
-    if (!inputElement.disabled) {
-        inputElement.focus();
-    } else {
-        const newValue = inputElement.value;
-        fetch(`/events/{{ event.event_id }}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ [attribute]: newValue })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert(data.error);
-            } else {
-                alert('Event updated successfully');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to update event');
-        });
-    }
-}
-
-function showReviewForm(vendorId) {
-    document.getElementById(`review-form-${vendorId}`).style.display = 'block';
-}
-
-function submitReview(event, vendorId) {
-    event.preventDefault();
-    const form = event.target;
-    const rating = form.rating.value;
-    const comment = form.comment.value;
-
-    fetch('/reviews/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ rating, comment, vendor_id: vendorId, event_id: {{ event.event_id }} })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert('Review added successfully');
-            location.reload();
-        } else {
-            alert(`Failed to add review: ${data.error}`);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to add review');
-    });
-}
-
-function removeVendor(vendorId) {
-    fetch(`/vendors/${vendorId}`, {
-        method: 'DELETE'
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Vendor removed successfully');
-            location.reload();
-        } else {
-            response.json().then(data => alert(data.error));
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to remove vendor');
-    });
-}
-
-function submitGuestForm(event) {
-    event.preventDefault();
-    const form = event.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const phone = form.phone.value;
-
-    fetch('/guests/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name, email, phone, status: 'pending', event_id: {{ event.event_id }} })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            alert(data.error);
-        } else {
-            alert('Guest added successfully');
-            location.reload();
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to add guest');
-    });
-}
-
-function editTask(button) {
-    const row = button.closest('tr');
-    row.querySelectorAll('input, select').forEach(element => element.disabled = false);
-    button.style.display = 'none';
-    row.querySelector('.save-task-button').style.display = 'inline';
-}
-
-function saveTask(button) {
-    const row = button.closest('tr');
-    const taskId = button.getAttribute('data-id');
-    const description = row.querySelector('input[type="text"]').value;
-    const status = row.querySelector('select').value;
-    const dueDate = row.querySelector('input[type="date"]').value;
-
-    fetch(`/tasks/${taskId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ description, status, due_date: dueDate })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            alert(data.error);
-        } else {
-            alert('Task updated successfully');
-            location.reload();
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to update task');
-    });
-}
-
-function deleteTask(button) {
-    const taskId = button.getAttribute('data-id');
-
-    fetch(`/tasks/${taskId}`, {
-        method: 'DELETE'
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Task deleted successfully');
-            location.reload();
-        } else {
-            response.json().then(data => alert(data.error));
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to delete task');
-    });
-}
-
-function showAddTaskForm() {
-    document.querySelector('.add-task-form').style.display = 'block';
-}
-
-function submitTaskForm(event) {
-    event.preventDefault();
-    const form = event.target;
-    const description = form.description.value;
-    const status = form.status.value;
-    const dueDate = form.due_date.value;
-
-    fetch('/tasks/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ description, status, due_date: dueDate, event_id: {{ event.event_id }} })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            alert(data.error);
-        } else {
-            alert('Task added successfully');
-            location.reload();
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to add task');
-    });
-}
-function sendInvitation(eventId, guestId) {
-    fetch(`/events/${eventId}/${guestId}/invitations`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Invitation sent successfully');
-            location.reload();
-        } else {
-            return response.json().then(data => alert(data.error));
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to send invitation');
-    });
-}
-
-function toggleAddGuestForm() {
-    const form = document.querySelector('.add-guest-form');
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-}
-
-function submitGuestForm(event) {
-    event.preventDefault();
-    const form = event.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const phone = form.phone.value;
-
-    fetch('/guests/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name, email, phone, status: 'pending', event_id: {{ event.event_id }} })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            alert(data.error);
-        } else {
-            alert('Guest added successfully');
-            location.reload();
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to add guest');
-    });
-}
-
-function deleteGuest(guestId) {
-    fetch(`/guests/${guestId}`, {
-        method: 'DELETE'
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Guest deleted successfully');
-            location.reload();
-        } else {
-            response.json().then(data => alert(data.error));
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to delete guest');
-    });
-}
-
-</script>
 {% endblock %}
+
+
+{% block page_scripts %}
+<script>
+    // Tab switching functionality
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tasksTabContent = document.querySelector('.tasks-content');
+    const vendorsTabContent = document.querySelector('.vendors-content');
+    const guestsTabContent = document.querySelector('.guests-content');
+    const budgetTabContent = document.querySelector('.budget-content');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Display the contents of the selected tab
+            const tabName = btn.dataset.tab;
+            console.log(tabName)
+            if (tabName === 'tasks') {
+                tasksTabContent.style.display = 'block';
+                vendorsTabContent.style.display = 'none';
+                guestsTabContent.style.display = 'none';
+                budgetTabContent.style.display = 'none';
+            } else if (tabName === 'vendors') {
+                tasksTabContent.style.display = 'none';
+                vendorsTabContent.style.display = 'block';
+                guestsTabContent.style.display = 'none';
+                budgetTabContent.style.display = 'none';
+            } else if (tabName === 'guests') {
+                tasksTabContent.style.display = 'none';
+                vendorsTabContent.style.display = 'none';
+                guestsTabContent.style.display = 'block';
+                budgetTabContent.style.display = 'none';
+            } else if (tabName === 'budget') {
+                tasksTabContent.style.display = 'none';
+                vendorsTabContent.style.display = 'none';
+                guestsTabContent.style.display = 'none';
+                budgetTabContent.style.display = 'block';
+            }
+        });
+    });
+
+    // Simulate progress bar animation
+    document.addEventListener('DOMContentLoaded', () => {
+        const progressBar = document.querySelector('.progress');
+        progressBar.style.width = '0%';
+        setTimeout(() => {
+            progressBar.style.width = '75%';
+        }, 300);
+    });
+</script>
+{% endblock page_scripts %}

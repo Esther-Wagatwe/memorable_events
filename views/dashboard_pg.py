@@ -1,26 +1,58 @@
 from flask import render_template
 from flask_login import login_required
-from models import Event, EventStatus
+from models import Event, EventStatus, Vendor
 from views import app_views
 from models.engine import Session
+from flask_login import current_user
+from models.dummy_data_gen import create_data
+
 
 @app_views.route('/', methods=['GET'])
 @login_required
 def dashboard():
+    
+    # Generate random data
+    # create_data()
+    
     session = Session()
+    context = {}
     try:
-        events = session.query(Event).filter(Event.status == EventStatus.ACTIVE).all()
-        event_data = []
-        for event in events:
-            event_data.append({
-                'id': event.event_id,
-                'name': event.name,
-                'date': event.date.strftime('%Y-%m-%d'),
-                'total_guests': len(event.guests),
-                'total_vendors': len(event.vendors),
-                'status': event.status.name
-            })
-        total_events = len(events)
-        return render_template('dashboard/dashboard.html', events=event_data, total_events=total_events)
+        
+        # Get the events
+        my_events = (
+            session.query(Event)
+            .filter(Event.owner_id == current_user.user_id)
+            .all()
+        )
+        context['events'] = my_events
+        
+        # Get all available vendors
+        all_vendors = session.query(Vendor).all()
+        context['vendors'] = all_vendors
+        
+        # Get mt upcoming events
+        upcoming_events = (
+            session.query(Event)
+            .filter(Event.status == EventStatus.UPCOMING)
+            .filter(Event.owner_id == current_user.user_id)
+            .all()
+        )
+        context['upcoming_events'] = upcoming_events
+        
+        # Get mt total guests from upcoming events
+        total_guests = sum(len(event.guests) for event in upcoming_events)
+        context['total_guests'] = total_guests
+        
+        # Get my total vendors for upcoming events
+        total_vendors = sum(len(event.vendors) for event in upcoming_events)
+        context['total_vendors'] = total_vendors
+        
+        # Get the total cost for upcoming events
+        total_cost = sum(event.get_event_total_cost() for event in upcoming_events)
+        context['total_cost'] = f"Ksh.{total_cost:,.2f}"
+        
+        
+        
+        return render_template('dashboard/dashboard.html', **context)
     finally:
         session.close()

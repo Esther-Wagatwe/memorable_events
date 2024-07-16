@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from . import Base
+from models import Base
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 

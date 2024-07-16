@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from . import Base
+from datetime import datetime
 
 class Reviews(Base):
     __tablename__ = 'Reviews'
@@ -8,13 +9,11 @@ class Reviews(Base):
     review_id = Column(Integer, primary_key=True, autoincrement=True)
     rating = Column(Integer, nullable=False)
     comment = Column(Text, nullable=True)
-    review_date = Column(Date, nullable=False)
+    review_date = Column(Date, nullable=False, default=datetime.now().date())
     vendor_id = Column(Integer, ForeignKey('Vendor.vendor_id'), nullable=False)
-    event_id = Column(Integer, ForeignKey('Event.event_id'), nullable=False)
     user_id = Column(Integer, ForeignKey('User.user_id'), nullable=False)
 
     vendor = relationship('Vendor', back_populates='reviews')
-    event = relationship('Event', back_populates='reviews')
     user = relationship('User', back_populates='reviews')
 
     def serialize(self):
