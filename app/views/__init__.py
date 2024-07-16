@@ -13,5 +13,5 @@ from .signup_pg import *
 from .users import *
 from .reviews import *
 from .about_pg import *
-# from .invitation import *
-from .send_invite import *
+from .invitation import *
+# from .send_invite import *

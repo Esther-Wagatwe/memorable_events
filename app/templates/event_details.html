@@ -47,7 +47,7 @@
         <option value="declined">Declined</option>
     </select>
 </div>
-<button class="add-guest-button">Add Guest</button>
+<button class="add-guest-button" onclick="toggleAddGuestForm()">Add Guest</button>
 <table class="guests-table">
     <thead>
         <tr>
@@ -66,8 +66,8 @@
             <td>{{ guest.phone }}</td>
             <td>{{ guest.status }}</td>
             <td>
-                <button class="delete-guest-button" data-id="{{ guest.guest_id }}">Delete</button>
-                <button class="send-invitation-button">Send Invitation</button>
+                <button class="delete-guest-button" data-id="{{ guest.guest_id }}" onclick="deleteGuest({{ guest.guest_id }})">Delete</button>
+                <button class="send-invitation-button" onclick="sendInvitation({{ event.event_id }}, {{ guest.guest_id }})">Send Invitation</button>
             </td>
         </tr>
         {% endfor %}
@@ -426,5 +426,78 @@ function submitTaskForm(event) {
         alert('Failed to add task');
     });
 }
+function sendInvitation(eventId, guestId) {
+    fetch(`/events/${eventId}/${guestId}/invitations`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Invitation sent successfully');
+            location.reload();
+        } else {
+            return response.json().then(data => alert(data.error));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to send invitation');
+    });
+}
+
+function toggleAddGuestForm() {
+    const form = document.querySelector('.add-guest-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+function submitGuestForm(event) {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const phone = form.phone.value;
+
+    fetch('/guests/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, phone, status: 'pending', event_id: {{ event.event_id }} })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            alert('Guest added successfully');
+            location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to add guest');
+    });
+}
+
+function deleteGuest(guestId) {
+    fetch(`/guests/${guestId}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Guest deleted successfully');
+            location.reload();
+        } else {
+            response.json().then(data => alert(data.error));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to delete guest');
+    });
+}
+
 </script>
 {% endblock %}

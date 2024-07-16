@@ -1,13 +1,29 @@
 from flask import request, redirect, url_for, render_template, jsonify
 from flask_login import login_required
-from models import Guest, Event
+from models import Guest, Event, Invitation
 from models.engine import Session
 from views import app_views
 
 @app_views.route('/events/<int:event_id>/guests/', methods=['GET'])
 def list_guests(event_id):
-    guests = session.query(Guest).filter_by(event_id=event_id).all()
-    return jsonify([guest.serialize() for guest in guests])
+    session = Session()
+    guests = (
+        session.query(Guest, Invitation.status)
+        .outerjoin(Invitation)
+        .filter(Guest.event_id == event_id)
+        .all()
+    )
+    return jsonify([
+    {
+        "guest_id": guest.guest_id,
+        "name": guest.name,
+        "email": guest.email,
+        "phone": guest.phone,
+        # "status": invitation_status if invitation_status else guest.status  # Default to guest status
+        "status": guest.status
+    }
+    for guest, invitation_status in guests
+])
 
 @app_views.route('/guests/', methods=['POST'])
 def add_guest():

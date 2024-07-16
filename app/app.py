@@ -1,5 +1,4 @@
 from flask import Flask
-from os import getenv
 from views import app_views
 import secrets
 from models import User
@@ -16,14 +15,6 @@ app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
 
 mail = init_app(app)
-
-db_user = getenv('DB_USER')
-db_password = getenv('DB_PASSWORD')
-db_host = getenv('DB_HOST')
-db_name = getenv('DB_NAME')
-
-SQLALCHEMY_DATABASE_URI = "mysql://{}:{}@{}/{}".format(db_user, db_password, db_host, db_name)
-
 
 login_manager = LoginManager()
 login_manager.init_app(app)
