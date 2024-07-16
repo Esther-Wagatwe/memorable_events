@@ -66,24 +66,20 @@ Memorable Events is a web application designed to help users plan and manage per
 ## Screenshots
 
 ### Dashboard
-![Dashboard](app/static/images/dashboard_screenshot.png)
+![Dashboard](static/images/dashboard_screenshot.png)
 - Use the dashboard to create new events, manage guests, send invitations, add tasks, and review vendors.
 
 ### Vendors Page
-![Vendors Page](app/static/images/vendors_screenshot.png)
+![Vendors Page](static/images/vendors_screenshot.png)
 - Use the vendors page to browse through a comprehensive list of available vendors and choose the best fit for your event!
 
 ### Tasks Page
-![Tasks Page](app/static/images/tasks_screenshot.png)
+![Tasks Page](static/images/tasks_screenshot.png)
 - Use the tasks page to view all tasks for your events, helping you monitor your progress and ensure everything is on track.
 
 ### Event Details Page
-![Event Details Page](app/static/images/event_details_screenshot.png)
+![Event Details Page](static/images/event_details_screenshot.png)
 - Use the event details page to manage your event details, add guests, and view selected vendors—all in one convenient location.
-
-## Contributing
-
-Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) for more information.
 
 ## Contact
 
