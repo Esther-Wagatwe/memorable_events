@@ -288,9 +288,9 @@
                 </div>
             </div>
         </div> -->
-        <a href="" class="btn">Book Vendor</a>
+        <button class="btn" id="book-vendor-button">Book Vendor</button>
 
-        <div class="selector-form">
+        <div class="selector-form" style="display: none;">
             <form action="/vendors/{{ vendor.vendor_id }}/book-event" method="post">
                 <label for="event">Select Event Name:</label>
                 <select id="event" name="event">
@@ -303,6 +303,7 @@
         </div>
 
     </div>
+
     <div class="reviews">
         <h3 class="reviews-subtitle">Customer Reviews <span class="reviews-subtitle-count">({{ vendor.review_count }})</span></h3>
         
@@ -320,5 +321,23 @@
 
         </div>
     </div>
+
 </div>
 {% endblock %}
+
+{% block page_scripts %}
+
+<script>
+    // Add a event listener to the button to toggle between show and hidden
+    const bookVendorButton = document.getElementById('book-vendor-button');
+    const selectorForm = document.querySelector('.selector-form');
+    bookVendorButton.addEventListener('click', function() {
+        if (selectorForm.style.display === 'none') {
+            selectorForm.style.display = 'block';
+        } else {
+            selectorForm.style.display = 'none';
+        }
+    });
+</script>
+
+{% endblock page_scripts %}

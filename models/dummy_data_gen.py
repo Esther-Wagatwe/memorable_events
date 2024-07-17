@@ -61,7 +61,7 @@ def create_data():
             
             review = Reviews(
                 rating=weighted_starts_rating(),
-                comment=lorem.get_paragraph(),
+                comment=lorem.get_paragraph(sentence_range=(1, 5)),
                 user=random_user,
                 vendor=new_vendor
             )
