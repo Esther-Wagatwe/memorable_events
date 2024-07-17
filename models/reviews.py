@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, Date, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 from . import Base
 from datetime import datetime
 
@@ -29,3 +30,13 @@ class Reviews(Base):
 
     def __repr__(self):
         return "Review {}: {}".format(self.review_id, self.rating)
+
+    @hybrid_property
+    def get_review_date_str(self):
+        return self.review_date.strftime("%B %d, %Y") if self.review_date else None
+    
+    @hybrid_property
+    def review_starts(self):
+        stars = int(self.rating)
+        return "★" * stars + "☆" * (5 - stars)
+    

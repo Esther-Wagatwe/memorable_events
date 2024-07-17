@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Memorable Events - Your Event Planning Partner</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         :root {
             --primary-color: #4a90e2;
@@ -17,6 +21,7 @@
             --success-color: #28a745;
             --warning-color: #ffc107;
             --danger-color: #dc3545;
+            --error-color: #dc3545;
         }
 
         * {
@@ -36,7 +41,7 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 10px 20px;
         }
 
         header {
@@ -84,6 +89,7 @@
         .dropdown {
             position: relative;
         }
+
         .dropdown .dropbtn {
             border: none;
             outline: none;
@@ -99,7 +105,7 @@
             position: absolute;
             background-color: #f9f9f9;
             min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
             left: 50%;
             transform: translateX(-50%);
@@ -107,6 +113,7 @@
             border-radius: 8px;
             margin-right: 5px;
         }
+
         .dropdown-content a {
             float: none;
             color: black;
@@ -118,16 +125,22 @@
             border-radius: 5px;
 
         }
+
         .dropdown-content a:hover {
             background-color: var(--border-color);
         }
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
         .profile-image {
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            border-width: 2px;
+            border-style: solid;
+            border-color: var(--gradient-start);
             vertical-align: middle;
         }
 
@@ -135,6 +148,40 @@
 
         main {
             padding: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 0.7rem 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .star-rating {
+            /*color: gold;*/
+            margin-right: 0.5rem;
+            border-width: 0.2rem;
         }
     </style>
 
@@ -149,7 +196,7 @@
             <ul class="nav-links">
                 <li><a href="/">Dashboard</a></li>
                 <li><a href="/events">My Events</a></li>
-                <li><a href="#">Vendors</a></li>
+                <li><a href="/vendors">Vendors</a></li>
                 <li>
                     <div class="dropdown">
                         <button class="dropbtn">

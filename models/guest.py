@@ -8,8 +8,8 @@ class Guest(Base):
     guest_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     email = Column(String(255), nullable=False)
-    phone = Column(String(20), nullable=False)
-    status = Column(String(45), nullable=False)
+    phone = Column(String(20), nullable=True)
+    status = Column(String(45), nullable=True)
     event_id = Column(Integer, ForeignKey('Event.event_id'), nullable=False)
 
     event = relationship('Event', back_populates='guests')

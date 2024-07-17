@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy import func, select, case, Float
 from sqlalchemy.ext.hybrid import hybrid_property
 from . import Base
 from .associations import event_vendor
@@ -15,6 +16,8 @@ class Vendor(Base):
     category = Column(String(45), nullable=True)
     description = Column(Text, nullable=True)
     image_path = Column(String(512), nullable=False)
+    # cover_image = Column(String(512), nullable=True)
+    # location = Column(String(255), nullable=True)
     phone_number = Column(String(20), nullable=False)
     email = Column(String(255), nullable=False)
     service_fee = Column(Integer, nullable=True)

@@ -1,0 +1,188 @@
+{% extends "base.html" %} {% block page_styles %}
+<style>
+    .section-title {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .vendor-filters {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+
+    .filter-group {
+        flex: 1;
+        margin-right: 1rem;
+    }
+
+    .filter-group:last-child {
+        margin-right: 0;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .filter-group select,
+    .filter-group input[type="text"] {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .vendor-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .vendor-card {
+        background-color: var(--card-background);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .vendor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .vendor-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .vendor-info {
+        padding: 1rem;
+    }
+
+    .vendor-name {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .vendor-category {
+        font-size: 0.9rem;
+        color: var(--secondary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .vendor-rating {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .vendor-location {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .pagination button {
+        background-color: var(--card-background);
+        border: 1px solid var(--border-color);
+        padding: 0.5rem 1rem;
+        margin: 0 0.25rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .pagination button:hover,
+    .pagination button.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .vendor-filters {
+            flex-direction: column;
+        }
+
+        .filter-group {
+            margin-right: 0;
+            margin-bottom: 1rem;
+        }
+
+        .vendor-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+    }
+</style>
+{% endblock page_styles %} {% block content %}
+<h1 class="section-title">Vendor Directory</h1>
+
+<form class="vendor-filters">
+    <div class="filter-group">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+            <option value="">All Categories</option>
+            <option value="venue">Venues</option>
+            <option value="catering">Catering</option>
+            <option value="photography">Photography</option>
+            <option value="music">Music & Entertainment</option>
+            <option value="decor">Decor & Floral</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" placeholder="Enter city or zip code" />
+    </div>
+    <div class="filter-group">
+        <label for="rating">Minimum Rating</label>
+        <select id="rating" name="rating">
+            <option value="">Any Rating</option>
+            <option value="5">5 Stars</option>
+            <option value="4">4+ Stars</option>
+            <option value="3">3+ Stars</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="search">Search</label>
+        <input type="text" id="search" name="search" placeholder="Search vendors" />
+    </div>
+</form>
+
+<div class="vendor-grid">
+    {% for vendor in vendors %}
+    <div class="vendor-card">
+        <img src="{{ vendor.image_path }}" alt="{{ vendor.name }}" class="vendor-image" width="250" height="200" />
+        <div class="vendor-info">
+            <h3 class="vendor-name">{{ vendor.name }}</h3>
+            <p class="vendor-category">{{ vendor.category }}</p>
+            <div class="vendor-rating">
+                <span class="star-rating">{{ vendor.review_starts }}</span>
+                <span>({{ vendor.review_score_str }})</span>
+            </div>
+            <!-- <p class="vendor-location">Nairobi, Kenya</p> -->
+            <a href="/vendors/{{ vendor.vendor_id }}" class="btn">View Profile</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- <div class="pagination">
+    <button>1</button>
+    <button>2</button>
+    <button>3</button>
+    <button>4</button>
+    <button>5</button>
+    <button>Next &gt;</button>
+</div> -->
+{% endblock %}

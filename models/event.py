@@ -23,7 +23,7 @@ class Event(Base):
     owner_id = Column(Integer, ForeignKey('User.user_id'), nullable=False)
     
     location = Column(String(255), nullable=False)
-    description = Column(String(255), nullable=True)
+    description = Column(String(4082), nullable=True)
     date = Column(Date, nullable=False)
     name = Column(String(45), nullable=False)
     status = Column(Enum(EventStatus), default=EventStatus.ACTIVE)

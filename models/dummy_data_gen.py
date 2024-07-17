@@ -1,6 +1,7 @@
 
 import random
 import string
+import lorem
 
 from .engine import Session
 from .user import User
@@ -60,7 +61,7 @@ def create_data():
             
             review = Reviews(
                 rating=weighted_starts_rating(),
-                comment=''.join(random.choices(string.ascii_letters + string.digits, k=100)),
+                comment=lorem.get_paragraph(),
                 user=random_user,
                 vendor=new_vendor
             )

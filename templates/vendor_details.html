@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+
+{% block page_styles %}
+<style>
+    .vendor-profile {
+        background-color: var(--card-background);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .vendor-header {
+        position: relative;
+        height: 300px;
+        background-image: url('https://page-images.websim.ai/Bride%20with%20bridesmaids_200x200xhPxoTZPwNLeYA7kFix5824e998abe85.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .vendor-logo {
+        position: absolute;
+        bottom: -50px;
+        left: 50px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 5px solid var(--card-background);
+        object-fit: cover;
+    }
+
+    .vendor-info {
+        padding: 2rem;
+        padding-left: 220px;
+    }
+
+    .vendor-name {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .vendor-category {
+        font-size: 1.2rem;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+    }
+
+    .vendor-rating {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .star-rating {
+        color: gold;
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+    }
+
+    .vendor-location {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 1rem;
+    }
+
+    .vendor-description {
+        margin-bottom: 2rem;
+    }
+
+    .vendor-services {
+        margin-bottom: 2rem;
+    }
+
+    .vendor-services h3 {
+        margin-bottom: 1rem;
+    }
+
+    .service-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .service-item {
+        background-color: var(--background-color);
+        padding: 1rem;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .vendor-portfolio {
+        margin-bottom: 2rem;
+    }
+
+    .portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .portfolio-item {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+        border-radius: 4px;
+    }
+
+    .portfolio-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .portfolio-item:hover img {
+        transform: scale(1.1);
+    }
+
+    .reviews {
+        margin-top: 2rem;
+        padding: 10px;
+    }
+
+    .reviews-subtitle {
+        color: var(--primary-color);
+        margin-bottom: 10px;
+    }
+
+    .reviews-subtitle-count {
+        color: var(--secondary-color);
+        font-size: small;
+        font-weight: lighter;
+    }
+
+    .reviews-container{
+        max-height: 900px;
+        overflow-y: auto;
+    }
+
+    .review-item {
+        background-color: var(--background-color);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        margin: 10px;
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .reviewer-name {
+        font-weight: bold;
+    }
+
+    .review-date {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        color: white;
+        padding: 0.7rem 1.2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        .vendor-info {
+            padding-left: 2rem;
+        }
+
+        .vendor-logo {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .service-list,
+        .portfolio-grid {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+    }
+</style>
+
+<style>
+    .selector-form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+    .selector-form label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+    .selector-form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .selector-form button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .selector-form button:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock page_styles %}
+
+
+{% block content %}
+<div class="vendor-profile">
+    <div class="vendor-header">
+        <img src="{{ vendor.image_path }}" alt="{{ vendor.name }}" class="vendor-logo" width="150" height="150">
+    </div>
+    <div class="vendor-info">
+        <h1 class="vendor-name">{{ vendor.name }}</h1>
+        <p class="vendor-category">{{ vendor.category }}</p>
+        <div class="vendor-rating">
+            <span class="star-rating">{{ vendor.review_starts }}</span>
+            <span>({{ vendor.review_score_str }} - {{ vendor.review_count }} reviews)</span>
+        </div>
+        <p class="vendor-location">Nairobi</p>
+        <p class="vendor-description">
+            {{ vendor.description}}
+        </p>
+        
+        <!-- <div class="vendor-services">
+            <h3>Our Services</h3>
+            <div class="service-list">
+                <div class="service-item">Wedding Photography</div>
+                <div class="service-item">Engagement Sessions</div>
+                <div class="service-item">Corporate Events</div>
+                <div class="service-item">Portrait Photography</div>
+                <div class="service-item">Photo Booth Rentals</div>
+                <div class="service-item">Album Design</div>
+            </div>
+        </div>
+        <div class="vendor-portfolio">
+            <h3>Portfolio</h3>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <img src="https://eventio.com/images/vendors/captured-moments-1.jpg" alt="Wedding couple at sunset"
+                        width="200" height="200">
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://eventio.com/images/vendors/captured-moments-2.jpg" alt="Bride with bridesmaids"
+                        width="200" height="200">
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://eventio.com/images/vendors/captured-moments-3.jpg"
+                        alt="Corporate event photography" width="200" height="200">
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://eventio.com/images/vendors/captured-moments-4.jpg"
+                        alt="Engagement photo in the park" width="200" height="200">
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://eventio.com/images/vendors/captured-moments-5.jpg" alt="Wedding reception decor"
+                        width="200" height="200">
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://eventio.com/images/vendors/captured-moments-6.jpg" alt="Family portrait"
+                        width="200" height="200">
+                </div>
+            </div>
+        </div> -->
+        <a href="" class="btn">Book Vendor</a>
+
+        <div class="selector-form">
+            <form action="/vendors/{{ vendor.vendor_id }}/book-event" method="post">
+                <label for="event">Select Event Name:</label>
+                <select id="event" name="event">
+                    {% for event in events %}
+                    <option value="{{ event.event_id }}">{{ event.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+    </div>
+    <div class="reviews">
+        <h3 class="reviews-subtitle">Customer Reviews <span class="reviews-subtitle-count">({{ vendor.review_count }})</span></h3>
+        
+        <div class="reviews-container">
+            {% for review in vendor.reviews %}
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="reviewer-name">{{ review.user.username }}</span>
+                    <span class="review-date">{{ review.get_review_date_str }}</span>
+                </div>
+                <div class="star-rating">{{ review.review_starts }}</div>
+                <p>{{ review.comment }}</p>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

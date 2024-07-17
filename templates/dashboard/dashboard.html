@@ -162,7 +162,7 @@
             <p>Date: {{ event.formatted_date }}</p>
             <p>Guests: {{ event.guest_count }}</p>
             <p>Location: {{ event.formatted_location }}</p>
-            <a href="#" class="btn">Manage Event</a>
+            <a href="/events/{{ event.event_id }}" class="btn">Manage Event</a>
         </div>
         {% endfor %}
 
@@ -176,18 +176,18 @@
 </section>
 
 <section id="vendors">
-    <h2 class="section-title">Explore Vendors</h2>
+    <h2 class="section-title">Explore Top Vendors</h2>
     <div class="vendors-list"
         style=" display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1.5rem; padding-bottom: 1rem; ">
 
-        {% for vendor in vendors %}
+        {% for vendor in top_vendors %}
         <div class="vendor-card" style="flex: 0 0 auto; width: 300px; scroll-snap-align: start">
             <img src="{{ vendor.image_path }}" alt="Gourmet Catering" width="300" height="200" />
             <h3>{{ vendor.name }}</h3>
             <p>{{ vendor.clean_description }}</p>
-            <p class="vendor-rating">{{ vendor.review_starts }} {{ vendor.review_score_str }} ({{ vendor.review_count }}
-                reviews)</p>
-            <a href="#" class="btn">View Details</a>
+            <p class="vendor-rating"> 
+                <span class="star-rating">{{ vendor.review_starts }}</span> {{ vendor.review_score_str }} ({{ vendor.review_count }} reviews)</p>
+            <a href="/vendors/{{ vendor.vendor_id }}" class="btn">View Details</a>
         </div>
         {% endfor %}
 

@@ -27,8 +27,12 @@ def dashboard():
         context['events'] = my_events
         
         # Get all available vendors
-        all_vendors = session.query(Vendor).all()
-        context['vendors'] = all_vendors
+        top_vendors = (
+            session.query(Vendor)
+            .all()
+        )
+        top_vendors.sort(key=lambda x: x.average_review_score, reverse=True)
+        context['top_vendors'] = top_vendors[:10]
         
         # Get mt upcoming events
         upcoming_events = (

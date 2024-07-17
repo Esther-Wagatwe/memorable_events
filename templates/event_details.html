@@ -54,6 +54,17 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 1rem;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .management-actions-global {
+        margin-bottom: 15px;
+        margin-top: 0px;
+        padding-bottom: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        border-bottom: 2px solid var(--border-color);
     }
 
     .contact-link {
@@ -162,11 +173,6 @@
         border-radius: 12px;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
         padding: 15px 10px;
-    }
-
-    .vendor-actions-global {
-        margin-bottom: 5px;
-        margin-top: 0px;
     }
 
     .vendor-item {
@@ -306,15 +312,7 @@
         color: #666;
     }
 
-    .guest-list-actions {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 1.5rem;
-        margin-left: 20px;
-        margin-right: 20px;
-        padding-bottom: 5px;
-        border-bottom: 2px solid var(--border-color);
-    }
+    
 </style>
 
 
@@ -437,16 +435,16 @@
 
 
 {% block content %}
-<h1 class="section-title">Manage Event: Sarah's Wedding</h1>
+<h1 class="section-title">Manage Event: {{ event.formatted_name }}</h1>
 
 <div class="event-management">
     <aside class="event-sidebar">
         <div class="event-info">
             <h2>Event Details</h2>
-            <p><strong>Date:</strong> August 15, 2023</p>
-            <p><strong>Time:</strong> 4:00 PM - 11:00 PM</p>
-            <p><strong>Location:</strong> Sunset Beach Resort</p>
-            <p><strong>Guests:</strong> 80</p>
+            <p><strong>Date: </strong>{{ event.date }}</p>
+            <p><strong>Time: </strong> 4:00 PM - 11:00 PM</p>
+            <p><strong>Location: </strong>{{ event.formatted_location }}</p>
+            <p><strong>Guests: </strong>{{ event.guest_count }}</p>
             <div class="progress-container">
                 <p><strong>Planning Progress:</strong></p>
                 <div class="progress-bar">
@@ -459,13 +457,102 @@
 
     <section class="management-content">
         <div class="management-tabs">
-            <button class="tab-btn active" data-tab="tasks">Tasks</button>
-            <button class="tab-btn" data-tab="vendors">Vendors</button>
+            <button class="tab-btn active" data-tab="vendors">Vendors</button>
             <button class="tab-btn" data-tab="guests">Guest List</button>
+            <button class="tab-btn" data-tab="tasks">Tasks</button>
             <button class="tab-btn" data-tab="budget">Budget</button>
         </div>
 
-        <div class="tasks-content">
+        <div class="vendors-content">
+            <div class="management-actions-global">
+                <button class="btn btn-primary">Add New Vendor</button>
+            </div>
+
+            <ul class="vendor-list">
+
+                {% for vendor in event.vendors %}
+                <li class="vendor-item">
+                    <div class="vendor-row">
+                        <div class="vendor-primary-details">
+                            <img src="{{ vendor.image_path }}" alt="Blooming Blossoms Florist" class="vendor-image">
+                            <div class="vendor-details">
+                                <h3>{{ vendor.name }}</h3>
+                                <p>{{ vendor.description }}</p>
+                                <p><strong>Contact:</strong> <a href="tel:{{ vendor.phone_number }}">{{ vendor.phone_number }}</a>
+                                </p>
+                                <p><strong>Email:</strong> <a href="mailto:{{ vendor.email }}"><span>{{ vendor.email }}</span></a>
+                                </p>
+                                <p><strong>Status:</strong> <span class="status confirmed">Confirmed</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vendor-actions" style="display: none;">
+                        <button class="btn btn-primary">Message</button>
+                        <button class="btn btn-secondary">View Contract</button>
+                    </div>
+                </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+
+        <div class="guests-content" style="display: none;">
+
+            <div class="management-actions-global">
+                <button class="btn">Add New Guest</button>
+                <button class="btn">Send Reminders</button>
+            </div>
+
+            <ul class="guest-list">
+
+                {% for guest in event.guests %}
+                <li class="guest-item">
+                    <div class="guest-info">
+                        <img src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=" alt="{{ guest.name }}" class="guest-avatar" width="50" height="50">
+                        <div class="guest-details">
+                            <h3>{{ guest.name }}</h3>
+                            <p><a class="contact-link" href="mailto:{{ guest.email }}">{{ guest.email }}</a> | <a
+                                    class="contact-link" href="tel:{{ guest.phone }}">{{ guest.phone }}</a></p>
+                        </div>
+                    </div>
+                    <span class="guest-status status-confirmed">Confirmed</span>
+                    <div class="guest-actions">
+                        <button style="color: aqua;"><i class="far fa-edit"></i></button>
+                        <button style="color: turquoise;"><i class="fa-regular fa-envelope"></i></button>
+                        <button style="color: tomato;"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </li>
+                {% endfor %}
+
+            </ul>
+
+            <div class="guest-summary">
+                <div class="summary-item">
+                    <div class="summary-number">{{ event.guest_count }}</div>
+                    <div class="summary-label">Confirmed</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">0</div>
+                    <div class="summary-label">Pending</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">0</div>
+                    <div class="summary-label">Declined</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">{{ event.guest_count }}</div>
+                    <div class="summary-label">Total</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tasks-content" style="display: none;">
+
+            <div class="management-actions-global">
+                <button class="btn btn-primary">Add New Task</button>
+            </div>
+
             <ul class="task-list">
                 <li class="task-item">
                     <input type="checkbox" class="task-checkbox" id="task1" checked="">
@@ -495,94 +582,13 @@
             </ul>
         </div>
 
-        <div class="vendors-content" style="display: none;">
-            <div class="vendor-actions-global">
-                <button class="btn btn-primary">Add New Vendor</button>
-            </div>
-
-            <ul class="vendor-list">
-
-                {% for _ in "123" %}
-                <li class="vendor-item">
-                    <div class="vendor-row">
-                        <div class="vendor-primary-details">
-                            <img src="https://images.unsplash.com/reserve/xd45Y326SvKzSR3Nanc8_MRJ_8125-1.jpg"
-                                alt="Blooming Blossoms Florist" class="vendor-image">
-                            <div class="vendor-details">
-                                <h3>Blooming Blossoms Florist</h3>
-                                <p>Specializing in elegant wedding bouquets and floral arrangements.</p>
-                                <p><strong>Contact:</strong> Emily Rose | <a href="tel:+15551234567">555-123-4567</a>
-                                </p>
-                                <p><strong>Email:</strong> <a
-                                        href="mailto:jane@example.co.ke"><span>jane@example.co.ke</span></a>
-                                </p>
-                                <p><strong>Status:</strong> <span class="status confirmed">Confirmed</span></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="vendor-actions" style="display: none;">
-                        <button class="btn btn-primary">Message</button>
-                        <button class="btn btn-secondary">View Contract</button>
-                    </div>
-                </li>
-                {% endfor %}
-
-            </ul>
-        </div>
-
-        <div class="guests-content" style="display: none;">
-
-            <div class="guest-list-actions">
-                <button class="btn">Add New Guest</button>
-                <button class="btn">Send Reminders</button>
-                <button class="btn">Export Guest List</button>
-            </div>
-
-            <ul class="guest-list">
-
-                {% for _ in "12345678" %}
-                <li class="guest-item">
-                    <div class="guest-info">
-                        <img src="https://replicate.delivery/yhqm/6GEU6HxPoEK4Dlu7mk0KehRGSSCIc0J5erQoCjXT7CZohHJTA/out-0.png"
-                            alt="Emily Johnson" class="guest-avatar" width="50" height="50">
-                        <div class="guest-details">
-                            <h3>Emily Johnson</h3>
-                            <p><a class="contact-link" href="mailto:emily@gmail.com">emily@gmail.com</a> | <a
-                                    class="contact-link" href="tel:+2547225646654">07225646654</a></p>
-                        </div>
-                    </div>
-                    <span class="guest-status status-confirmed">Confirmed</span>
-                    <div class="guest-actions">
-                        <button>Edit</button>
-                        <button>Remove</button>
-                    </div>
-                </li>
-                {% endfor %}
-
-            </ul>
-
-            <div class="guest-summary">
-                <div class="summary-item">
-                    <div class="summary-number">65</div>
-                    <div class="summary-label">Confirmed</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-number">12</div>
-                    <div class="summary-label">Pending</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-number">3</div>
-                    <div class="summary-label">Declined</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-number">80</div>
-                    <div class="summary-label">Total</div>
-                </div>
-            </div>
-
-        </div>
-
         <div class="budget-content" style="display: none;">
+
+            <div class="management-actions-global">
+                <button class="btn">Add Expense</button>
+                <button class="btn">Generate Report</button>
+            </div>
+
             <div class="budget-overview">
                 <div class="budget-card">
                     <h3>Total Budget</h3>
@@ -676,11 +682,6 @@
                     </tr>
                 </tbody>
             </table>
-
-            <div class="budget-actions">
-                <button class="btn">Add Expense</button>
-                <button class="btn">Generate Report</button>
-            </div>
         </div>
 
     </section>
