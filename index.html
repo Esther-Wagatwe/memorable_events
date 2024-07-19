@@ -7,15 +7,14 @@
     <link rel="stylesheet" href="static/css/landing.css">
 </head>
 <body>
-
     <header class="custom-header">
         <div class="header-content">
             <nav class="nav-links">
                 <ul>
-                    <li><a href="{{ url_for('app_views.dashboard') }}">Home</a></li>
-                    <li><a href="{{ url_for('app_views.login') }}">Sign In</a></li>
-                    <li><a href="{{ url_for('app_views.signup') }}">Sign Up</a></li>
-                    <li><a href="{{ url_for('app_views.about_page') }}">About</a></li>
+                    <li><a href="templates/dashboard.html">Home</a></li>
+                    <li><a href="templates/login.html">Sign In</a></li>
+                    <li><a href="templates/signup.html">Sign Up</a></li>
+                    <li><a href="templates/about.html">About</a></li>
                 </ul>
             </nav>
         </div>
@@ -23,11 +22,11 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <img src="{{ url_for('static', filename='images/image1.jpg') }}" alt="Hero Image" class="hero-image">
+        <img src="static/images/image1.jpg" alt="Hero Image" class="hero-image">
         <div class="hero-content">
             <h1>Memorable Events</h1>
             <p>Plan and Manage Your Events with Ease, Your Personal Event Planning Assistant</p>
-            <a href="{{ url_for('app_views.signup') }}" class="cta-button">Get Started</a>
+            <a href="templates/signup.html" class="cta-button">Get Started</a>
         </div>
     </section>
 
@@ -35,22 +34,22 @@
     <section class="features">
         <h2>Have a look at some of the benefits we offer</h2>
         <div class="feature">
-            <img src="{{ url_for('static', filename='images/event_icon.png') }}" alt="Event Planning Icon">
+            <img src="static/images/event_icon.png" alt="Event Planning Icon">
             <h3>Event Planning</h3>
             <p>Effortlessly plan and organize your events from start to finish.</p>
         </div>
         <div class="feature">
-            <img src="{{ url_for('static', filename='images/guest_icon.png') }}" alt="Guest Management Icon">
+            <img src="static/images/guest_icon.png" alt="Guest Management Icon">
             <h3>Guest Management</h3>
             <p>Manage your guest list and RSVPs with ease.</p>
         </div>
         <div class="feature">
-            <img src="{{ url_for('static', filename='images/vendor_icon.jpeg') }}" alt="Vendor Coordination Icon">
+            <img src="static/images/vendor_icon.jpeg" alt="Vendor Coordination Icon">
             <h3>Vendor Coordination</h3>
             <p>Connect with vendors of choice and manage services for your events.</p>
         </div>
         <div class="feature">
-            <img src="{{ url_for('static', filename='images/task_icon.jpeg') }}" alt="Task Tracking Icon">
+            <img src="static/images/task_icon.jpeg" alt="Task Tracking Icon">
             <h3>Task Tracking</h3>
             <p>Stay on top of tasks and deadlines with our intuitive task manager.</p>
         </div>
@@ -84,12 +83,11 @@
     <!-- Custom Footer -->
     <footer class="custom-footer">
         <div class="footer-content">
-            <!-- No links in the footer as requested -->
             <div class="footer-contact">
                 <p>Contact Us: Email: memorableevents.com | Phone: +123456789</p>
             </div>
         </div>
     </footer>
-
 </body>
 </html>
+
