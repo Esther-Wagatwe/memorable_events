@@ -51,7 +51,6 @@ body {
     position: relative;
     text-align: center;
     color: white;
-    width: 100%;
 }
 
 .hero-image {
@@ -66,7 +65,7 @@ body {
     left: 20%;
     transform: translate(-50%, -50%);
     max-width: 800px;
-    width: 100%;
+    width: 60%;
 }
 
 .hero h1 {
