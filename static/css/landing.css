@@ -66,16 +66,16 @@ body {
     transform: translate(-50%, -50%);
     max-width: 800px;
     width: 100%;
-    padding: 100px;
+    padding: 50%;
 }
 
 .hero h1 {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     margin-bottom: 20px;
 }
 
 .hero p {
-    font-size: 1.1rem;
+    font-size: 2.1rem;
     margin-bottom: 30px;
 }
 
